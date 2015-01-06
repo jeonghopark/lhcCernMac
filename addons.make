@@ -1,0 +1,3 @@
+addons
+ofxCv
+ofxGui
