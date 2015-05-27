@@ -40,7 +40,7 @@ void PathData::setup( vector<ofVec3f> _a, vector<ofVec3f> _b, vector<ofVec3f> _c
     for (int i=0; i<_a.size(); i++) {
         lengthPath.push_back( lengthCal( curveFomulaCal( _a[i], _b[i], _c[i], _d[i] ) ) );
         valueDegree.push_back( degreeCal( curveFomulaCal( _a[i], _b[i], _c[i], _d[i] ) ) );
-        twoPointsDegree.push_back( twoPointsSegreeCal( curveFomulaCal( _a[i], _b[i], _c[i], _d[i] ) ) );
+        twoPointsDegree.push_back( twoPointsDegreeCal( curveFomulaCal( _a[i], _b[i], _c[i], _d[i] ) ) );
         lineDirection.push_back( lineDirectionCal( curveFomulaCal( _a[i], _b[i], _c[i], _d[i] ) ) );
     }
     
@@ -179,6 +179,8 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
         float _y2 = heightScreen - 80 - _degreeSort[i] * _degreeRatio;
         float _di = lineDirection[i];
         
+//        cout << _degreeSort[i] << endl;
+        
         float _baseFQ = 80;
         
         if (_di<0) {
@@ -189,8 +191,8 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
                     _c = 255;
                 }
                 score2D.setColor(k-(int)_startL, (int)_y2-512-_baseFQ, ofColor(255,_c));
-//                for (int k=0; k<5; k++) {
-//                    score2D.setColor(-_startL, _y2-512-_baseFQ-k+2, ofColor(255,255));
+//                for (int l=0; l<20; l++) {
+//                    score2D.setColor(k-(int)_startL, _y2-512-_baseFQ-l+10, ofColor(255,255));
 //                }
             }
         } else {
@@ -364,8 +366,7 @@ float PathData::degreeCal( vector<ofVec3f> _v ){
             float fDot = _v[i+1].x * _v[i].x + _v[i+1].y * _v[i].y + _v[i+1].z * _v[i].z;
             
             float _f = acos(fDot/(fA*fB)) * 180 / PI;
-            
-            return _fDegree = _fDegree + _f;
+            return _fDegree = abs(_fDegree + _f);
             
         }
         
@@ -374,7 +375,7 @@ float PathData::degreeCal( vector<ofVec3f> _v ){
 }
 
 //--------------------------------------------------------------
-float PathData::twoPointsSegreeCal( vector<ofVec3f> _v ){
+float PathData::twoPointsDegreeCal( vector<ofVec3f> _v ){
     
     float _fDegree = 0;
     

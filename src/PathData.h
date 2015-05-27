@@ -77,7 +77,7 @@ public:
     vector<float> valueDegree;
     void degreeDraw();
 
-    float twoPointsSegreeCal( vector<ofVec3f> _v );
+    float twoPointsDegreeCal( vector<ofVec3f> _v );
     vector<float> twoPointsDegree;
 
     

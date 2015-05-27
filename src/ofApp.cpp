@@ -13,13 +13,13 @@ void ofApp::setup(){
     ofSetDataPathRoot("../Resources/");
     
     ofBackground( ofColor(5, 14, 36) );
-    ofSetupScreen();
+//    ofSetupScreen();
     ofSetFrameRate(60);
-    ofEnableAlphaBlending();
+//    ofEnableAlphaBlending();
     
-    ofEnablePointSprites();
+//    ofEnablePointSprites();
     
-    ofEnableDepthTest();
+//    ofEnableDepthTest();
     
     pointScale = 100;
     pointScaleDir = 100;
@@ -89,7 +89,7 @@ void ofApp::setup(){
     lineSize = 12;
     rotateZFactor = 0;
     
-    lhcIgFileLoad.openFile("data/sampleIG.ig", "../Resources/LHC/");
+    lhcIgFileLoad.openFile("data/dimuon-Jpsi_0.ig", "../Resources/LHC/");
     bufferEventCopy = lhcIgFileLoad.bufferEvent;
     
     waveRight = 0.0;
@@ -232,6 +232,7 @@ void ofApp::update(){
     } else {
         rotateZFactor = 0;
     }
+    
     rotateZValue = rotateZValue + rotateZFactor;
     
     pathMake.score2DTriggerDraw(lineLeftXPos - scoreWidth*0.5, lineRightXPos - scoreWidth*0.5, 0.4);
@@ -350,6 +351,7 @@ void ofApp::draw(){
     }
     
     interfaceDrawing();
+    
     
 }
 
@@ -475,7 +477,7 @@ void ofApp::close(){
 
 
 //--------------------------------------------------------------
-void ofApp:: boxDraw( vector<ofVec3f> _vV, ofColor _c ){
+void ofApp::boxDraw( vector<ofVec3f> _vV, ofColor _c ){
     
     ofPushStyle();
     ofSetColor(_c);
@@ -525,7 +527,7 @@ vector<ofVec3f> ofApp::boxVectorE(ofBuffer _b, string _p, float _l, float _r) {
                 
                 vector<string> points = ofSplitString(_line, ",");
                 
-                if (ofToFloat(points[0])>_l) {
+                if (ofToFloat(points[0]) > _l) {
                     
                     ofVec3f pos1T = ofVec3f( ofToFloat(points[5]), ofToFloat(points[6]), ofToFloat(points[7]) ) * pointScale;
                     _temp.push_back(pos1T);
@@ -592,7 +594,7 @@ vector<ofVec3f> ofApp::boxVectorH(ofBuffer _b, string _p, float _l, float _r) {
                 
                 vector<string> points = ofSplitString(_line, ",");
                 
-                if (ofToFloat(points[0])>_l) {
+                if (ofToFloat(points[0]) > _l) {
                     
                     ofVec3f pos1T = ofVec3f( ofToFloat(points[5]), ofToFloat(points[6]), ofToFloat(points[7]) ) * pointScale;
                     _temp.push_back(pos1T);
@@ -874,7 +876,7 @@ void ofApp::mouseDragged(int x, int y, int button){
             y = _maxLimitY;
         }
         
-        changeSpeedMouse = (int)ofMap(y, _minLimitY, _maxLimitY, 100, -20 ) * 0.01;
+        changeSpeedMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 100, -20 ) * 0.01;
         speed = 0.4 + changeSpeedMouse;
         
         speedCtrl.position = ofVec2f( ofGetWidth()-interfaceW-10-30, y-10 );
@@ -890,7 +892,7 @@ void ofApp::mouseDragged(int x, int y, int button){
             y = _maxLimitY;
         }
         
-        changeVolumeMouse = (int)ofMap(y, _minLimitY, _maxLimitY, 15, -85 ) * 0.01;
+        changeVolumeMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 15, -85 ) * 0.01;
         volume = 0.85 + changeVolumeMouse;
         
         volumeCtrl.position = ofVec2f( ofGetWidth()-interfaceW-10-60, y-10 );
@@ -933,7 +935,7 @@ void ofApp::mouseReleased(int x, int y, int button){
         openIgFile();
     }
     
-    if (bufferEventCopy.size()>0) {
+    if (bufferEventCopy.size() > 0) {
         
         if (nextEvent.inside( x, y ) && bNextEvent ) {
             bNextEvent = false;
