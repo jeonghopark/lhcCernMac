@@ -10,7 +10,7 @@ string informationStremTitle[6] = {"Run :", "Event", "Lumi Section", "Orbit :", 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    ofSetDataPathRoot("../Resources/");
+    ofSetDataPathRoot("../Resources/data/");
     
     ofBackground( ofColor(5, 14, 36) );
 //    ofSetupScreen();
@@ -26,23 +26,23 @@ void ofApp::setup(){
     
     scoreWidth = ofGetWidth();
     
-    informationIconImg.loadImage("data/information.png");
-    informationTextImg.loadImage("data/loadingImage_text.png");
+    informationIconImg.loadImage("information.png");
+    informationTextImg.loadImage("loadingImage_text.png");
     bInformationIcon = false;
     informationIcon.set(ofGetWidth()-50, 10, 50, 50);
     
     
-    openIGImg.loadImage("data/open.png");
-    nextEventImg.loadImage("data/next.png");
-    prevEventImg.loadImage("data/prev.png");
-    autoPlayImg.loadImage("data/auto.png");
-    resetViewImg.loadImage("data/reset.png");
-    volumeImg.loadImage("data/volume.png");
-    speedImg.loadImage("data/speed.png");
+    openIGImg.loadImage("open.png");
+    nextEventImg.loadImage("next.png");
+    prevEventImg.loadImage("prev.png");
+    autoPlayImg.loadImage("auto.png");
+    resetViewImg.loadImage("reset.png");
+    volumeImg.loadImage("volume.png");
+    speedImg.loadImage("speed.png");
     
-    coordX.loadFont("data/verdana.ttf", 9);
-    coordY.loadFont("data/verdana.ttf", 9);
-    information.loadFont("data/verdana.ttf", 10);
+    coordX.loadFont("verdana.ttf", 9);
+    coordY.loadFont("verdana.ttf", 9);
+    information.loadFont("verdana.ttf", 10);
     
     uiInformation = true;
     
@@ -89,7 +89,7 @@ void ofApp::setup(){
     lineSize = 12;
     rotateZFactor = 0;
     
-    lhcIgFileLoad.openFile("data/dimuon-Jpsi_0.ig", "../Resources/LHC/");
+    lhcIgFileLoad.openFile("dimuon-Jpsi_0.ig", "LHC/");
     bufferEventCopy = lhcIgFileLoad.bufferEvent;
     
     waveRight = 0.0;
