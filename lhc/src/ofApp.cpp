@@ -470,7 +470,9 @@ void ofApp::loadEvent(ofBuffer _b) {
 
 
 //--------------------------------------------------------------
-void ofApp::close(){
+void ofApp::exit(){
+    
+    std::exit(0);
     
 }
 
