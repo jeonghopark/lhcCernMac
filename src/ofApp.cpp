@@ -12,6 +12,8 @@ void ofApp::setup(){
     
     ofSetDataPathRoot("../Resources/data/");
     
+    ofEnableSmoothing();
+    
     ofBackground( ofColor(5, 14, 36) );
 //    ofSetupScreen();
     ofSetFrameRate(60);
@@ -26,23 +28,23 @@ void ofApp::setup(){
     
     scoreWidth = ofGetWidth();
     
-    informationIconImg.loadImage("information.png");
-    informationTextImg.loadImage("loadingImage_text.png");
+    informationIconImg.load("information.png");
+    informationTextImg.load("loadingImage_text.png");
     bInformationIcon = false;
     informationIcon.set(ofGetWidth()-50, 10, 50, 50);
     
     
-    openIGImg.loadImage("open.png");
-    nextEventImg.loadImage("next.png");
-    prevEventImg.loadImage("prev.png");
-    autoPlayImg.loadImage("auto.png");
-    resetViewImg.loadImage("reset.png");
-    volumeImg.loadImage("volume.png");
-    speedImg.loadImage("speed.png");
+    openIGImg.load("open.png");
+    nextEventImg.load("next.png");
+    prevEventImg.load("prev.png");
+    autoPlayImg.load("auto.png");
+    resetViewImg.load("reset.png");
+    volumeImg.load("volume.png");
+    speedImg.load("speed.png");
     
-    coordX.loadFont("verdana.ttf", 9);
-    coordY.loadFont("verdana.ttf", 9);
-    information.loadFont("verdana.ttf", 10);
+    coordX.load("verdana.ttf", 9);
+    coordY.load("verdana.ttf", 9);
+    information.load("verdana.ttf", 10);
     
     uiInformation = true;
     
@@ -280,9 +282,9 @@ void ofApp::draw(){
     ofRotateZ(rotateZValue);
     
     ofPushStyle();
-    glLineWidth(2);
+    glLineWidth(1);
     ofSetColor(40, 40, 200, 120);
-    ofLine(leftStart, rightStart);
+    ofDrawLine(leftStart, rightStart);
     ofPopStyle();
     
     if ((allPlay)&&!(protonPos.z>0)) {
@@ -309,13 +311,13 @@ void ofApp::draw(){
     ofPushMatrix();
     ofPushStyle();
     ofSetColor( 255, 30 );
-    ofLine(ofGetWidth()*0.5, score2DlineTop*1.2, ofGetWidth()*0.5, ofGetHeight()-10);
-    //    ofLine(ofGetWidth()*0.4, ofGetHeight()-10, ofGetWidth()*0.6, ofGetHeight()-10);
+    ofDrawLine(ofGetWidth()*0.5, score2DlineTop*1.2, ofGetWidth()*0.5, ofGetHeight()-10);
+    //    ofDrawLine(ofGetWidth()*0.4, ofGetHeight()-10, ofGetWidth()*0.6, ofGetHeight()-10);
     
     ofSetColor( 140, 120, 210, 40 );
     glLineWidth(0.7);
-    ofLine(lineRightXPos + ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop*1.2, lineRightXPos + ofGetWidth()*0.5-scoreWidth*0.5, ofGetHeight()-10);
-    ofLine(lineLeftXPos + ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop*1.2, lineLeftXPos + ofGetWidth()*0.5-scoreWidth*0.5, ofGetHeight()-10);
+    ofDrawLine(lineRightXPos + ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop*1.2, lineRightXPos + ofGetWidth()*0.5-scoreWidth*0.5, ofGetHeight()-10);
+    ofDrawLine(lineLeftXPos + ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop*1.2, lineLeftXPos + ofGetWidth()*0.5-scoreWidth*0.5, ofGetHeight()-10);
     ofPopStyle();
     
     pathMake.score2dTriggerImg.draw( ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop );
@@ -484,18 +486,18 @@ void ofApp::boxDraw( vector<ofVec3f> _vV, ofColor _c ){
     ofPushStyle();
     ofSetColor(_c);
     for (int i=0; i<_vV.size(); i+=8) {
-        ofLine( _vV[i+0], _vV[i+1] );
-        ofLine( _vV[i+1], _vV[i+2] );
-        ofLine( _vV[i+2], _vV[i+3] );
-        ofLine( _vV[i+3], _vV[i+0] );
-        ofLine( _vV[i+4], _vV[i+5] );
-        ofLine( _vV[i+5], _vV[i+6] );
-        ofLine( _vV[i+6], _vV[i+7] );
-        ofLine( _vV[i+7], _vV[i+4] );
-        ofLine( _vV[i+0], _vV[i+4] );
-        ofLine( _vV[i+1], _vV[i+5] );
-        ofLine( _vV[i+2], _vV[i+6] );
-        ofLine( _vV[i+3], _vV[i+7] );
+        ofDrawLine( _vV[i+0], _vV[i+1] );
+        ofDrawLine( _vV[i+1], _vV[i+2] );
+        ofDrawLine( _vV[i+2], _vV[i+3] );
+        ofDrawLine( _vV[i+3], _vV[i+0] );
+        ofDrawLine( _vV[i+4], _vV[i+5] );
+        ofDrawLine( _vV[i+5], _vV[i+6] );
+        ofDrawLine( _vV[i+6], _vV[i+7] );
+        ofDrawLine( _vV[i+7], _vV[i+4] );
+        ofDrawLine( _vV[i+0], _vV[i+4] );
+        ofDrawLine( _vV[i+1], _vV[i+5] );
+        ofDrawLine( _vV[i+2], _vV[i+6] );
+        ofDrawLine( _vV[i+3], _vV[i+7] );
     }
     ofPopStyle();
     
@@ -1161,11 +1163,11 @@ void ofApp::interfaceDrawing(){
     ofSetColor(73, 164, 168, 100);
     float _minLimitY = openIGFile.getPosition().y + 10;
     float _maxLimitY = resetView.getPosition().y + 15;
-    ofLine( speedCtrl.getPosition().x + 10, _minLimitY, speedCtrl.getPosition().x + 10, _maxLimitY );
-    ofLine( volumeCtrl.getPosition().x + 10, _minLimitY, volumeCtrl.getPosition().x + 10, _maxLimitY );
+    ofDrawLine( speedCtrl.getPosition().x + 10, _minLimitY, speedCtrl.getPosition().x + 10, _maxLimitY );
+    ofDrawLine( volumeCtrl.getPosition().x + 10, _minLimitY, volumeCtrl.getPosition().x + 10, _maxLimitY );
     
-    ofLine( speedCtrl.getPosition().x, ofGetHeight()-45-15, speedCtrl.getPosition().x + 20, ofGetHeight()-45-15 );
-    ofLine( volumeCtrl.getPosition().x, ofGetHeight()-132-15, volumeCtrl.getPosition().x + 20, ofGetHeight()-132-15 );
+    ofDrawLine( speedCtrl.getPosition().x, ofGetHeight()-45-15, speedCtrl.getPosition().x + 20, ofGetHeight()-45-15 );
+    ofDrawLine( volumeCtrl.getPosition().x, ofGetHeight()-132-15, volumeCtrl.getPosition().x + 20, ofGetHeight()-132-15 );
     
     ofColor _onImgAlpha = ofColor( 255, 220 );
     ofColor _offImgAlpha = ofColor(53, 144, 148);
