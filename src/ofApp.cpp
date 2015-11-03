@@ -1103,8 +1103,8 @@ void ofApp::audioRequested 	(float * output, int bufferSize, int nChannels){
             if(rightOut>1.0) rightOut=1.0;
             if(rightOut<-1.0) rightOut=-1.0;
             
-            output[i*nChannels] = leftOut * leftVolumeRatio + rightOut * rightVolumeRatio;
-            output[i*nChannels + 1] = rightOut * leftVolumeRatio + leftOut * rightVolumeRatio;
+            output[i*nChannels]     = (leftOut * leftVolumeRatio + rightOut * rightVolumeRatio) * 2.0;
+            output[i*nChannels + 1] = (rightOut * leftVolumeRatio + leftOut * rightVolumeRatio) * 2.0;
         }
     }
     
