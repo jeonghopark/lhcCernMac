@@ -74,25 +74,36 @@ void SpectrumDrawer::loadImageSpectrum(ofImage _img){
     width = spectrumCaptureLoader.getWidth();
     height = spectrumCaptureLoader.getHeight();
     
-    unsigned char * rawPixels = spectrumCaptureLoader.getPixels().getData();
-    int r;
-    int g;
-    int b;
-    for (int i = 0; i < height; i++){
-        for (int j = 0; j < width; j++){
-            r = rawPixels[((height-i) * width + j ) * 3];
-            g = rawPixels[((height-i) * width + j ) * 3 + 1];
-            b = rawPixels[((height-i) * width + j ) * 3 + 2];
-            //pixels[i][j]=value/3;
-            //spectrum->setPixel(i, j, r,g,b);
-            
-            pixels[j][i]=(r+g+b)/3.0;
-            image[j][i][0]=(GLubyte) r;
-            image[j][i][1]=(GLubyte) g;
-            image[j][i][2]=(GLubyte) b;
-            
+    
+
+    if ( spectrumCaptureLoader.getPixels().size() > 0 ) {
+        
+        unsigned char * rawPixels = spectrumCaptureLoader.getPixels().getData();
+        int r;
+        int g;
+        int b;
+
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                
+                int _index = j * 3 + i * width * 3;
+                
+                r = rawPixels[_index];
+                g = rawPixels[_index + 1];
+                b = rawPixels[_index + 2];
+                //pixels[i][j]=value/3;
+                //spectrum->setPixel(i, j, r,g,b);
+                
+                pixels[j][i]=(r+g+b)/3.0;
+                image[j][i][0]=(GLubyte) r;
+                image[j][i][1]=(GLubyte) g;
+                image[j][i][2]=(GLubyte) b;
+                
+            }
         }
+
     }
+
     
     width = spectrumCaptureLoader.getWidth();
     height = spectrumCaptureLoader.getHeight();

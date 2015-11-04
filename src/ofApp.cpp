@@ -10,7 +10,14 @@ string informationStremTitle[6] = {"Run :", "Event", "Lumi Section", "Orbit :", 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    ofSetDataPathRoot("../Resources/data/");
+
+#ifdef DEBUG
+    
+#else
+    ofSetDataPathRoot("../Resources/data");
+#endif
+
+    
     
     ofEnableSmoothing();
     
@@ -49,8 +56,7 @@ void ofApp::setup(){
     uiInformation = true;
     
     cam.setAutoDistance(false);
-    cam.setPosition(-500, -30, 0);
-    cam.setOrientation( ofVec3f(0, -90, 0) );
+    cam.setDistance(500);
     
     
     glEnable(GL_POINT_SMOOTH);
@@ -68,7 +74,7 @@ void ofApp::setup(){
     spectrum = new SpectrumDrawer( 1, maxHertz );
     
     maxHz = 8000;
-    minHz = 80;
+    minHz = 180;
     
     ofSoundStreamSetup( 2, 0, this, SAMPLE_RATE, INITIAL_BUFFER_SIZE, 4 );
     ofSoundStreamStop();
@@ -86,20 +92,26 @@ void ofApp::setup(){
     volume = 0.85;
     speed = 0.4;
     
-    eventCount = 0;
-    
+
     lineSize = 12;
     rotateZFactor = 0;
     
     lhcIgFileLoad.openFile("dimuon-Jpsi_0.ig", "LHC/");
     bufferEventCopy = lhcIgFileLoad.bufferEvent;
     
+    
+    if (lhcIgFileLoad.bufferEvent.size()>100) {
+        eventCount = 1;
+    } else {
+        eventCount = 0;
+    }
+    
     waveRight = 0.0;
     waveLeft = 0.0;
     
     spectrum->clearPixels();
     
-    loadEvent( bufferEventCopy[0] );
+    loadEvent( bufferEventCopy[eventCount] );
     linePathHiddenCapture();
     
     sizeSphere = 0;
@@ -239,6 +251,7 @@ void ofApp::update(){
     
     pathMake.score2DTriggerDraw(lineLeftXPos - scoreWidth*0.5, lineRightXPos - scoreWidth*0.5, 0.4);
     
+    
 }
 
 
@@ -253,6 +266,8 @@ void ofApp::draw(){
     ofPushMatrix();
     
     cam.begin();
+    
+    ofRotateY(90);
     
     ofPushMatrix();
     float modelview[16];
@@ -686,11 +701,13 @@ void ofApp::openIgFile(string URL){
                 bufferEventCopy = lhcIgFileLoad.bufferEvent;
             }
             
+            eventCount = 0;
+
+            
             trigger = false;
             protonPos = ofVec3f( 0, 0, -1000 );
             hitTime = ofGetElapsedTimeMillis();
             
-            eventCount = 0;
             
             igLoadReset();
             
