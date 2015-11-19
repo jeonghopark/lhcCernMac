@@ -7,31 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		13DBDF3E91D15454CDCE3F81 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 807DA2130DDB7679341206D8 /* ofxLabel.cpp */; };
 		4326D72BD016ADEE6028FDB6 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = E6A04FA5A6CAE23954F8EA7C /* unzip.c */; };
-		5DB0FD9C47C8AED393543077 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2CB61A3F6E62286D73F419FA /* ofxToggle.cpp */; };
-		5DE87C0399C3D16E809524E4 /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FE97224BEE70C8CAC2006DA /* ofxPanel.cpp */; };
-		72F586B1E35F0C5BCDB2003D /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B0340B37FFF274102BE3CCC /* ofxSlider.cpp */; };
-		883A19B4FB8259967B85B9FF /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8CE42EAFA1B5022BB6FFC4B /* ofxSliderGroup.cpp */; };
 		8ED307A2D3357A4D486796D8 /* PathData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 183F979CC49D0F68AA752408 /* PathData.cpp */; };
-		90A67B674EF9B104D82A5143 /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 978FC5AD324430DE5A0A5D92 /* ofxBaseGui.cpp */; };
 		9396F9ADBA3DBED9D9784E94 /* LHCIgFileLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27491242152158125A1B6CC5 /* LHCIgFileLoad.cpp */; };
 		A35212B81F0E40FCBEC92581 /* SpectrumDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C36A68916830A95C13EF2E7 /* SpectrumDrawer.cpp */; };
-		A8A2AFF91B4603A60080E17B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8A2AFF81B4603A60080E17B /* Images.xcassets */; };
-		BDED0ECDB2BE0FD939C38AEB /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C3ED944D179B4C151BDD311 /* ofxButton.cpp */; };
+		A8C210CE1BFD517C007399DA /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C210CC1BFD5095007399DA /* openFrameworksDebug.a */; };
 		D91F81BAC4553C52B7109311 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = D62AA33C27F10113FA7BB457 /* ioapi.c */; };
-		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
-		EB0E84BEAD177E6CB08DB4EF /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C98999A0E2181C67387FF65 /* ofxGuiGroup.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E4328147138ABC890047C5CB /* PBXContainerItemProxy */ = {
+		A8C210CB1BFD5095007399DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = E4B27C1510CBEB8E00536013;
+			remoteGlobalIDString = A8C210CA1BFD5070007399DA;
 			remoteInfo = openFrameworks;
 		};
 		E4EEB9AB138B136A00A80321 /* PBXContainerItemProxy */ = {
@@ -58,29 +49,13 @@
 /* Begin PBXFileReference section */
 		183F979CC49D0F68AA752408 /* PathData.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = PathData.cpp; path = src/PathData.cpp; sourceTree = SOURCE_ROOT; };
 		27491242152158125A1B6CC5 /* LHCIgFileLoad.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = LHCIgFileLoad.cpp; path = src/LHCIgFileLoad.cpp; sourceTree = SOURCE_ROOT; };
-		2C36B84F1D7547C03CD01C28 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxButton.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
-		2CB61A3F6E62286D73F419FA /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxToggle.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxToggle.cpp; sourceTree = SOURCE_ROOT; };
 		34C8D5080BCCF35D1525D61B /* ioapi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ioapi.h; path = src/ioapi.h; sourceTree = SOURCE_ROOT; };
-		3FE97224BEE70C8CAC2006DA /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
 		4C929FE6CF6420BD522AF940 /* LHCIgFileLoad.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = LHCIgFileLoad.h; path = src/LHCIgFileLoad.h; sourceTree = SOURCE_ROOT; };
 		5C36A68916830A95C13EF2E7 /* SpectrumDrawer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = SpectrumDrawer.cpp; path = src/SpectrumDrawer.cpp; sourceTree = SOURCE_ROOT; };
-		6B0340B37FFF274102BE3CCC /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxSlider.cpp; sourceTree = SOURCE_ROOT; };
-		6C98999A0E2181C67387FF65 /* ofxGuiGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGuiGroup.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxGuiGroup.cpp; sourceTree = SOURCE_ROOT; };
-		7C3ED944D179B4C151BDD311 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
-		7EA25DDCA1D54C3C8842C3D8 /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
-		807DA2130DDB7679341206D8 /* ofxLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxLabel.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxLabel.cpp; sourceTree = SOURCE_ROOT; };
 		8E355FE2AA1A17F8CE165960 /* unzip.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = unzip.h; path = src/unzip.h; sourceTree = SOURCE_ROOT; };
-		97332472E61EC4DA03FB7532 /* ofxSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSlider.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxSlider.h; sourceTree = SOURCE_ROOT; };
-		978FC5AD324430DE5A0A5D92 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxBaseGui.cpp; sourceTree = SOURCE_ROOT; };
-		A8A2AFF81B4603A60080E17B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LHC/Images.xcassets; sourceTree = "<group>"; };
 		B3FE34F6428B27049B9EABA5 /* SpectrumDrawer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SpectrumDrawer.h; path = src/SpectrumDrawer.h; sourceTree = SOURCE_ROOT; };
-		C0B01119435D4672DF3FF84B /* ofxGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGui.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxGui.h; sourceTree = SOURCE_ROOT; };
-		C7C85D012956D84B9210CE5A /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxPanel.h; sourceTree = SOURCE_ROOT; };
 		CDA08BDE1B44F38E69CF55F2 /* PathData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = PathData.h; path = src/PathData.h; sourceTree = SOURCE_ROOT; };
 		D62AA33C27F10113FA7BB457 /* ioapi.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = ioapi.c; path = src/ioapi.c; sourceTree = SOURCE_ROOT; };
-		D8CE42EAFA1B5022BB6FFC4B /* ofxSliderGroup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSliderGroup.cpp; path = ../../../../openFrameworks/addons/ofxGui/src/ofxSliderGroup.cpp; sourceTree = SOURCE_ROOT; };
-		E02A8EBF0C4EDC22A5BE4011 /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
-		E35C9532577449CCB61F814A /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxBaseGui.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxBaseGui.h; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../../openFrameworks/libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* LHCDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LHCDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
@@ -90,8 +65,6 @@
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../../openFrameworks/libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		E6A04FA5A6CAE23954F8EA7C /* unzip.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = unzip.c; path = src/unzip.c; sourceTree = SOURCE_ROOT; };
-		F41A373B07B06D6E50036BA4 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
-		FBAF68694A694072BD8D4217 /* ofxGuiGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGuiGroup.h; path = ../../../../openFrameworks/addons/ofxGui/src/ofxGuiGroup.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,49 +72,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
+				A8C210CE1BFD517C007399DA /* openFrameworksDebug.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		480A780D8D0308AE4A368801 /* ofxGui */ = {
+		6948EE371B920CB800B5AC1A /* local_addons */ = {
 			isa = PBXGroup;
 			children = (
-				A763ED608B35AE3310251DEE /* src */,
 			);
-			name = ofxGui;
-			sourceTree = "<group>";
-		};
-		A763ED608B35AE3310251DEE /* src */ = {
-			isa = PBXGroup;
-			children = (
-				978FC5AD324430DE5A0A5D92 /* ofxBaseGui.cpp */,
-				E35C9532577449CCB61F814A /* ofxBaseGui.h */,
-				7C3ED944D179B4C151BDD311 /* ofxButton.cpp */,
-				2C36B84F1D7547C03CD01C28 /* ofxButton.h */,
-				C0B01119435D4672DF3FF84B /* ofxGui.h */,
-				6C98999A0E2181C67387FF65 /* ofxGuiGroup.cpp */,
-				FBAF68694A694072BD8D4217 /* ofxGuiGroup.h */,
-				807DA2130DDB7679341206D8 /* ofxLabel.cpp */,
-				F41A373B07B06D6E50036BA4 /* ofxLabel.h */,
-				3FE97224BEE70C8CAC2006DA /* ofxPanel.cpp */,
-				C7C85D012956D84B9210CE5A /* ofxPanel.h */,
-				6B0340B37FFF274102BE3CCC /* ofxSlider.cpp */,
-				97332472E61EC4DA03FB7532 /* ofxSlider.h */,
-				D8CE42EAFA1B5022BB6FFC4B /* ofxSliderGroup.cpp */,
-				E02A8EBF0C4EDC22A5BE4011 /* ofxSliderGroup.h */,
-				2CB61A3F6E62286D73F419FA /* ofxToggle.cpp */,
-				7EA25DDCA1D54C3C8842C3D8 /* ofxToggle.h */,
-			);
-			name = src;
+			name = local_addons;
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				480A780D8D0308AE4A368801 /* ofxGui */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -149,7 +96,7 @@
 		E4328144138ABC890047C5CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E4328148138ABC890047C5CB /* openFrameworksDebug.a */,
+				A8C210CC1BFD5095007399DA /* openFrameworksDebug.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,12 +104,12 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-				A8A2AFF81B4603A60080E17B /* Images.xcassets */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
+				6948EE371B920CB800B5AC1A /* local_addons */,
 				E4B69B5B0A3A1756003C02F2 /* LHCDebug.app */,
 			);
 			sourceTree = "<group>";
@@ -207,7 +154,6 @@
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
 				E4C2427710CC5ABF004149E2 /* CopyFiles */,
-				A8A2AFF71B4603A10080E17B /* Resources */,
 			);
 			buildRules = (
 			);
@@ -254,25 +200,14 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		E4328148138ABC890047C5CB /* openFrameworksDebug.a */ = {
+		A8C210CC1BFD5095007399DA /* openFrameworksDebug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = openFrameworksDebug.a;
-			remoteRef = E4328147138ABC890047C5CB /* PBXContainerItemProxy */;
+			remoteRef = A8C210CB1BFD5095007399DA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
-
-/* Begin PBXResourcesBuildPhase section */
-		A8A2AFF71B4603A10080E17B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A8A2AFF91B4603A60080E17B /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		E4B6FFFD0C3F9AB9008CF71C /* ShellScript */ = {
@@ -286,7 +221,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rsync -aved ../../../../openFrameworks/libs/fmodex/lib/osx/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/\"; install_name_tool -change ./libfmodex.dylib @executable_path/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\n\nmkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\";\nmkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/data/\";\ncp -r bin/data \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources\";\ncp -f \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\n\nrsync -aved \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\nrsync -aved ../../../../openFrameworks/libs/glut/lib/osx/GLUT.framework \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\"\n";
+			shellScript = "rsync -aved ../../../../openFrameworks/libs/fmodex/lib/osx/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/\"; install_name_tool -change ./libfmodex.dylib @executable_path/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\nmkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\nrsync -aved \"$ICON_FILE\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Resources/\"\nrsync -aved ../../../../openFrameworks/libs/glut/lib/osx/GLUT.framework \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -302,14 +237,6 @@
 				8ED307A2D3357A4D486796D8 /* PathData.cpp in Sources */,
 				A35212B81F0E40FCBEC92581 /* SpectrumDrawer.cpp in Sources */,
 				4326D72BD016ADEE6028FDB6 /* unzip.c in Sources */,
-				90A67B674EF9B104D82A5143 /* ofxBaseGui.cpp in Sources */,
-				BDED0ECDB2BE0FD939C38AEB /* ofxButton.cpp in Sources */,
-				EB0E84BEAD177E6CB08DB4EF /* ofxGuiGroup.cpp in Sources */,
-				13DBDF3E91D15454CDCE3F81 /* ofxLabel.cpp in Sources */,
-				5DE87C0399C3D16E809524E4 /* ofxPanel.cpp in Sources */,
-				72F586B1E35F0C5BCDB2003D /* ofxSlider.cpp in Sources */,
-				883A19B4FB8259967B85B9FF /* ofxSliderGroup.cpp in Sources */,
-				5DB0FD9C47C8AED393543077 /* ofxToggle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,23 +272,9 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../../openFrameworks/addons/addons/libs,
-					../../../../openFrameworks/addons/addons/src,
-					../../../../openFrameworks/addons/ofxCv/libs,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/src,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/src,
-					../../../../openFrameworks/addons/ofxCv/src,
-					../../../../openFrameworks/addons/ofxGui/libs,
-					../../../../openFrameworks/addons/ofxGui/src,
 					src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -393,23 +306,9 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../../openFrameworks/addons/addons/libs,
-					../../../../openFrameworks/addons/addons/src,
-					../../../../openFrameworks/addons/ofxCv/libs,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/src,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/src,
-					../../../../openFrameworks/addons/ofxCv/src,
-					../../../../openFrameworks/addons/ofxGui/libs,
-					../../../../openFrameworks/addons/ofxGui/src,
 					src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
@@ -422,7 +321,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -435,20 +333,6 @@
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../../openFrameworks/addons/addons/libs,
-					../../../../openFrameworks/addons/addons/src,
-					../../../../openFrameworks/addons/ofxCv/libs,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/src,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/src,
-					../../../../openFrameworks/addons/ofxCv/src,
-					../../../../openFrameworks/addons/ofxGui/libs,
-					../../../../openFrameworks/addons/ofxGui/src,
 					src,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
@@ -466,7 +350,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -478,20 +361,6 @@
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
 					"$(OF_CORE_HEADERS)",
-					../../../../openFrameworks/addons/addons/libs,
-					../../../../openFrameworks/addons/addons/src,
-					../../../../openFrameworks/addons/ofxCv/libs,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/include/CLD,
-					../../../../openFrameworks/addons/ofxCv/libs/CLD/src,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/include/ofxCv,
-					../../../../openFrameworks/addons/ofxCv/libs/ofxCv/src,
-					../../../../openFrameworks/addons/ofxCv/src,
-					../../../../openFrameworks/addons/ofxGui/libs,
-					../../../../openFrameworks/addons/ofxGui/src,
 					src,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
