@@ -1,5 +1,7 @@
 # LHC CERN Data Audio Generator
 
+![captureImage.png](captureImage.png)
+
 This application works just on Mac OS Yosemite and oF 0.8.4    
 
 I used some codes of two projects from    
