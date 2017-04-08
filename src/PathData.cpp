@@ -445,9 +445,9 @@ void PathData::pathPolyLineDraw(){
     
     for (int i=0; i<pathPolyLines.size(); i++) {
         if (pathPolyLines[i].size()==2) {
-            ofSetColor( 16, 160, 144, 160);
+            ofSetColor( 255, 160);
         } else {
-            ofSetColor( 12, 255, 224, 200);
+            ofSetColor( 255, 200);
         }
         pathPolyLines[i].draw();
     }
@@ -484,7 +484,7 @@ void PathData::particleMoving(float _f){
         } else if ( _f < glm::length(pathPolyLines[i][0]) ) {
             ofSetColor( 240, 184, 161, _alpha*0.5 );
         } else {
-            ofSetColor( 240, 248, 255, _alpha );
+            ofSetColor( 255,29,15, _alpha );
         }
         
         sphereElement.setPosition(_pos);

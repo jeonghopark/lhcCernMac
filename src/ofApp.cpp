@@ -259,7 +259,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ofBackgroundGradient(ofColor(23, 114, 118), ofColor(5, 14, 36));
+    ofBackgroundGradient(ofColor(253, 0, 137), ofColor(52, 29, 152));
     ofNoFill();
     
     
