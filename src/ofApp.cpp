@@ -489,7 +489,7 @@ void ofApp::loadEvent(ofBuffer _b) {
 //--------------------------------------------------------------
 void ofApp::exit(){
     
-    std::exit(0);
+//    std::exit(0);
     
 }
 
@@ -900,7 +900,7 @@ void ofApp::mouseDragged(int x, int y, int button){
         changeSpeedMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 100, -20 ) * 0.01;
         speed = 0.4 + changeSpeedMouse;
         
-        speedCtrl.position = ofVec2f( ofGetWidth()-interfaceW-10-30, y-10 );
+        speedCtrl.position = glm::vec3( ofGetWidth()-interfaceW-10-30, y-10, 0 );
         
     }
     
@@ -916,7 +916,7 @@ void ofApp::mouseDragged(int x, int y, int button){
         changeVolumeMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 15, -85 ) * 0.01;
         volume = 0.85 + changeVolumeMouse;
         
-        volumeCtrl.position = ofVec2f( ofGetWidth()-interfaceW-10-60, y-10 );
+        volumeCtrl.position = glm::vec3( ofGetWidth()-interfaceW-10-60, y-10, 0 );
         
     }
     

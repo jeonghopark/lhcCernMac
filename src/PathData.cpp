@@ -184,7 +184,7 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
         float _baseFQ = 80;
         
         if (_di<0) {
-            float _startL = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
+            float _startL = pathPolyLines[i][0].size() * _lengthRatio + widthScreen * 0.5;
             for (int k=0; k>-(int)_x2; k--) {
                 float _c = ofMap(k, -_x2, 0, 0, _alpha);
                 if ((int)(_l - widthScreen * 0.5)==(k-(int)_startL)){
@@ -196,7 +196,7 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
 //                }
             }
         } else {
-            float _startR = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
+            float _startR = pathPolyLines[i][0].size() * _lengthRatio + widthScreen * 0.5;
             for (int k=0; k<(int)_x2; k++) {
                 float _c = ofMap(k, 0, _x2, _alpha, 0);
                 if ((int)(_r + widthScreen * 0.5)==(k+(int)_startR)){
@@ -239,7 +239,7 @@ ofPixels PathData::spectrum2DMake(float _f){
         float _baseFQ = 80;
         
         if (_di<0) {
-            float _startL = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
+            float _startL = pathPolyLines[i][0].size() * _lengthRatio + widthScreen * 0.5;
             for (int i=0; i>-_x2; i--) {
                 float _c = ofMap(i, -_x2, 0, 0, 255);
                 pathPixels.setColor(i-(int)_startL, (int)_y2-512-_baseFQ, ofColor(_c));
@@ -248,7 +248,7 @@ ofPixels PathData::spectrum2DMake(float _f){
                 }
             }
         } else {
-            float _startR = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
+            float _startR = pathPolyLines[i][0].size() * _lengthRatio + widthScreen * 0.5;
             for (int i=0; i<_x2; i++) {
                 float _c = ofMap(i, 0, _x2, 255, 0);
                 pathPixels.setColor(i+(int)_startR, (int)_y2-512-_baseFQ, ofColor(_c));
@@ -441,6 +441,8 @@ void PathData::pathPolyLineSetup(){
 void PathData::pathPolyLineDraw(){
     
     ofPushStyle();
+    ofSetLineWidth(0.1);
+    
     for (int i=0; i<pathPolyLines.size(); i++) {
         if (pathPolyLines[i].size()==2) {
             ofSetColor( 16, 160, 144, 160);
@@ -449,9 +451,11 @@ void PathData::pathPolyLineDraw(){
         }
         pathPolyLines[i].draw();
     }
+    
     ofPopStyle();
     
 }
+
 
 
 //--------------------------------------------------------------
@@ -461,20 +465,23 @@ void PathData::particleMoving(float _f){
     
     float _alpha = 100;
     
-    for (int i=0; i<pathPolyLines.size(); i++) {
-        float _length = _f - pathPolyLines[i][0].length();
+    
+    for(int i=0; i<pathPolyLines.size(); i++) {
+
+        float _length = _f - glm::length(pathPolyLines[i][0]);
         
         ofVec3f _pos = pathPolyLines[i].getPointAtLength(_length);
-        vector<ofVec3f> _tempPath = pathPolyLines[i].getVertices();
+
+        vector<glm::vec3> _tempPath = pathPolyLines[i].getVertices();
         
         int _indexChange;
         if (_tempPath.size()==2) _indexChange = 1;
         else _indexChange = lineStep - 1;
         
-        if (_f>_tempPath[_indexChange].length()) {
+        if ( _f > glm::length(_tempPath[_indexChange]) ) {
             ofSetColor( 32, 48, 80, _alpha*0.5 );
             _pos = _tempPath[_indexChange];
-        } else if (_f < pathPolyLines[i][0].length()) {
+        } else if ( _f < glm::length(pathPolyLines[i][0]) ) {
             ofSetColor( 240, 184, 161, _alpha*0.5 );
         } else {
             ofSetColor( 240, 248, 255, _alpha );
@@ -495,13 +502,13 @@ void PathData::particleMoving(float _f){
 void PathData::movingPointMeshUpdate(float _f){
     
     for (int i=0; i<pathPolyLines.size(); i++) {
-        float _length = _f - pathPolyLines[i][0].length();
+        float _length = _f - pathPolyLines[i][0].size();
         
         ofVec3f _pos;
         _pos = pathPolyLines[i].getPointAtLength(_length);
-        vector<ofVec3f> _tempPath = pathPolyLines[i].getVertices();
+        vector<glm::vec3> _tempPath = pathPolyLines[i].getVertices();
         
-        if (_f>pathPolyLines[i][pathPolyLines[i].size()-1].length()) {
+        if (_f>pathPolyLines[i][pathPolyLines[i].size()-1].size()) {
             _pos = _tempPath[pathPolyLines[i].size()-1];
         }
         
@@ -608,17 +615,17 @@ void PathData::creatorUpdate(float _f){
     int _circleStep = (int)(360/creatorResolution);
     
     for (int i=0; i<pathPolyLines.size(); i++) {
-        float _length = _f - pathPolyLines[i][0].length();
+        float _length = _f - pathPolyLines[i][0].size();
         ofVec3f _pos = pathPolyLines[i].getPointAtLength(_length);
         
-        vector<ofVec3f> _tempPath = pathPolyLines[i].getVertices();
+        vector<glm::vec3> _tempPath = pathPolyLines[i].getVertices();
         
-        if (_f>_tempPath[pathPolyLines[i].size()-1].length()) {
+        if (_f>_tempPath[pathPolyLines[i].size()-1].size()) {
             for (int t=0; t<=creatorResolution; t+=1) {
                 point3D[i].createrMesh.setColor(t, ofColor(32, 48, 80, _alpha));
             }
             _pos = _tempPath[pathPolyLines[i].size()-1];
-        } else if (_f < pathPolyLines[i][0].length()) {
+        } else if (_f < pathPolyLines[i][0].size()) {
             for (int t=0; t<=creatorResolution; t+=1) {
                 point3D[i].createrMesh.setColor(t, ofColor( 240, 184, 161, _alpha ));
             }
