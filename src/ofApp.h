@@ -163,15 +163,18 @@ public:
     bool bResetView, bOverResetView;
     
     ofRectangle speedCtrl;
+    ofRectangle autoRotationCtrl;
     ofRectangle volumeCtrl;
-    bool bOverSpeedCtrl, bOverVolumeCtrl;
+    bool bOverSpeedCtrl;
+    bool bOverautoRotationCtrl;
+    bool bOverVolumeCtrl;
     
     int interfaceW, interfaceH;
     
     ofImage openIGImg, nextEventImg, prevEventImg, autoPlayImg, resetViewImg, volumeImg, speedImg;
     
-    float changeSpeedMouse;
-    float changeVolumeMouse;
+//    float changeSpeedMouse;
+//    float changeVolumeMouse;
 
     
     ofImage informationIconImg;

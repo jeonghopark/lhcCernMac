@@ -155,9 +155,10 @@ void ofApp::setup(){
     bAutoPlay = true;
     interfaceSetting();
     
+    rotateZValue = 0.7;
     
-    changeSpeedMouse = 0;
-    changeVolumeMouse = 0;
+//    changeSpeedMouse = 0;
+//    changeVolumeMouse = 0;
     
 }
 
@@ -219,7 +220,7 @@ void ofApp::update(){
     protonPos = protonPos + ofVec3f(0, 0, protonSpeed);
     
     if (bAutoPlay) {
-        rotateZFactor = 0.1;
+//        rotateZFactor = 0.1;
         
         if (sizeSphere>400) {
             eventCount++;
@@ -861,10 +862,18 @@ void ofApp::mouseMoved(int x, int y){
     } else {
         bOverSpeedCtrl = false;
     }
+
+    if (autoRotationCtrl.inside( x, y )) {
+        bOverautoRotationCtrl = true;
+        interfaceMenuIndex = 6;
+    } else {
+        bOverautoRotationCtrl = false;
+    }
+
     
     if (volumeCtrl.inside( x, y )) {
         bOverVolumeCtrl = true;
-        interfaceMenuIndex = 6;
+        interfaceMenuIndex = 7;
     } else {
         bOverVolumeCtrl = false;
     }
@@ -875,8 +884,9 @@ void ofApp::mouseMoved(int x, int y){
         bOverInformationIcon = false;
     }
     
-    if (!bOverOpenIGFile && !bOverNextEvent && !bOverPrevEvent && !bOverAutoPlay && !bOverResetView && !bOverSpeedCtrl && !bOverVolumeCtrl && !bInformationIcon)
+    if (!bOverOpenIGFile && !bOverNextEvent && !bOverPrevEvent && !bOverAutoPlay && !bOverResetView && !bOverSpeedCtrl && !bOverVolumeCtrl && !bInformationIcon && !bOverautoRotationCtrl) {
         cam.enableMouseInput();
+    }
     
 }
 
@@ -897,12 +907,31 @@ void ofApp::mouseDragged(int x, int y, int button){
             y = _maxLimitY;
         }
         
-        changeSpeedMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 100, -20 ) * 0.01;
-        speed = 0.4 + changeSpeedMouse;
+        float _changeSpeedMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 100, -20 ) * 0.01;
+        speed = 0.4 + _changeSpeedMouse;
         
         speedCtrl.position = glm::vec3( ofGetWidth()-interfaceW-10-30, y-10, 0 );
         
     }
+
+    if (bOverautoRotationCtrl) {
+        cam.disableMouseInput();
+        
+        if (y < _minLimitY) {
+            y = _minLimitY;
+        } else if (y > _maxLimitY) {
+            y = _maxLimitY;
+        }
+        
+        float _changeSpeedMouse = ofMap( y, _minLimitY, _maxLimitY, 0, 4 );
+        rotateZFactor = _changeSpeedMouse;
+        
+        cout << rotateZFactor << endl;
+        
+        autoRotationCtrl.position = glm::vec3( ofGetWidth()-interfaceW-10-60, y-10, 0 );
+        
+    }
+
     
     if (bOverVolumeCtrl) {
         cam.disableMouseInput();
@@ -913,10 +942,10 @@ void ofApp::mouseDragged(int x, int y, int button){
             y = _maxLimitY;
         }
         
-        changeVolumeMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 15, -85 ) * 0.01;
-        volume = 0.85 + changeVolumeMouse;
+        float _changeVolumeMouse = (int)ofMap( y, _minLimitY, _maxLimitY, 15, -85 ) * 0.01;
+        volume = 0.85 + _changeVolumeMouse;
         
-        volumeCtrl.position = glm::vec3( ofGetWidth()-interfaceW-10-60, y-10, 0 );
+        volumeCtrl.position = glm::vec3( ofGetWidth()-interfaceW-10-90, y-10, 0 );
         
     }
     
@@ -1164,7 +1193,8 @@ void ofApp::interfaceSetting(){
     resetView.set( _x, _h-_height*1+_y, _width, _height);
     
     speedCtrl.set( _x-30, ofGetHeight()-55-15, 20, 20 );
-    volumeCtrl.set( _x-60, ofGetHeight()-142-15, 20, 20 );
+    autoRotationCtrl.set( _x-60, ofGetHeight()-142-15, 20, 20 );
+    volumeCtrl.set( _x-90, ofGetHeight()-142-15, 20, 20 );
     
     
 }
@@ -1180,10 +1210,13 @@ void ofApp::interfaceDrawing(){
     ofSetColor(73, 164, 168, 100);
     float _minLimitY = openIGFile.getPosition().y + 10;
     float _maxLimitY = resetView.getPosition().y + 15;
+    
     ofDrawLine( speedCtrl.getPosition().x + 10, _minLimitY, speedCtrl.getPosition().x + 10, _maxLimitY );
+    ofDrawLine( autoRotationCtrl.getPosition().x + 10, _minLimitY, autoRotationCtrl.getPosition().x + 10, _maxLimitY );
     ofDrawLine( volumeCtrl.getPosition().x + 10, _minLimitY, volumeCtrl.getPosition().x + 10, _maxLimitY );
     
     ofDrawLine( speedCtrl.getPosition().x, ofGetHeight()-45-15, speedCtrl.getPosition().x + 20, ofGetHeight()-45-15 );
+    ofDrawLine( autoRotationCtrl.getPosition().x, ofGetHeight()-45-15, autoRotationCtrl.getPosition().x + 20, ofGetHeight()-45-15 );
     ofDrawLine( volumeCtrl.getPosition().x, ofGetHeight()-132-15, volumeCtrl.getPosition().x + 20, ofGetHeight()-132-15 );
     
     ofColor _onImgAlpha = ofColor( 255, 220 );
@@ -1236,6 +1269,15 @@ void ofApp::interfaceDrawing(){
         ofSetColor( _offImgAlpha );
         speedImg.draw(speedCtrl);
     }
+
+    if (autoRotationCtrl.inside(mouseX, mouseY)) {
+        ofSetColor( _onImgAlpha );
+        speedImg.draw(autoRotationCtrl);
+    } else {
+        ofSetColor( _offImgAlpha );
+        speedImg.draw(autoRotationCtrl);
+    }
+
     
     if (volumeCtrl.inside(mouseX, mouseY)) {
         ofSetColor( _onImgAlpha );
