@@ -129,8 +129,8 @@ void SpectrumDrawer::loadImageSpectrum(ofImage _img){
 
 //--------------------------------------------------------------
 float SpectrumDrawer::getAmp(float x, float y){
-    float amp=0;
-    if(height>0){
+    float amp = 0;
+    if(height > 0){
         amp = getPixel(x, y);
     }
     return amp;
@@ -139,14 +139,14 @@ float SpectrumDrawer::getAmp(float x, float y){
 
 //--------------------------------------------------------------
 float SpectrumDrawer::getFreq(float y){
-    float freq=0;
+    float freq = 0;
     
-    if(height>0){
-        y-=9;
-        float yToFreq = (y/spectrumHeight)*maxHz;
+    if(height > 0){
+        y += 9;
+        float yToFreq = (y / spectrumHeight) * maxHz;
         
         //TODO logarithmic scale
-        freq = 1-(log(yToFreq)-log(minHz)) / (log(maxHz)-log(minHz));
+        freq = 1 - (log(yToFreq) - log(minHz)) / (log(maxHz) - log(minHz));
         freq *= maxHz;
         //freq = 1-(yToFreq-minHz) / (maxHz-minHz);
         //freq= (spectrumHeight-y+minHz)/spectrumHeight*(maxHz-minHz);

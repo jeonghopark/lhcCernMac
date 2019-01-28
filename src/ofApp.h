@@ -42,6 +42,10 @@ public:
     
 //    ofSoundStream soundStream;
     
+    void audioOut(ofSoundBuffer & buffer);
+    ofSoundStream soundStream;
+
+    
     float lineRight;
     float lineLeft;
     
