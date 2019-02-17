@@ -11,11 +11,11 @@ string informationStremTitle[6] = {"Run :", "Event", "Lumi Section", "Orbit :", 
 void ofApp::setup(){
     
 
-//#ifdef DEBUG
-//    
-//#else
-//    ofSetDataPathRoot("../Resources/data");
-//#endif
+#ifdef DEBUG
+    
+#else
+    ofSetDataPathRoot("../Resources/data");
+#endif
 
     
     
