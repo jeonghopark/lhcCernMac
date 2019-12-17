@@ -445,9 +445,9 @@ void PathData::pathPolyLineDraw(){
     
     for (int i=0; i<pathPolyLines.size(); i++) {
         if (pathPolyLines[i].size()==2) {
-            ofSetColor( 16, 160, 144, 160);
+            ofSetColor( 255,0,0, 160);
         } else {
-            ofSetColor( 12, 255, 224, 200);
+            ofSetColor( 255,0,0, 200);
         }
         pathPolyLines[i].draw();
     }

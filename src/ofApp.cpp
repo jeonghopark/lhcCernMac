@@ -54,10 +54,10 @@ void ofApp::setup(){
     coordY.load("verdana.ttf", 9);
     information.load("verdana.ttf", 10);
     
-    uiInformation = true;
+    uiInformation = false;
     
     cam.setAutoDistance(false);
-    cam.setDistance(500);
+    cam.setDistance(1650);
     
     
     glEnable(GL_POINT_SMOOTH);
@@ -71,10 +71,10 @@ void ofApp::setup(){
         sineBufferLeft[i] = sines[i];
     }
     
-    maxHertz = 8000;
+    maxHertz = 4000;
     spectrum = new SpectrumDrawer( 1, maxHertz );
     
-    maxHz = 8000;
+    maxHz = 4000;
     minHz = 180;
     
 //    ofSoundStreamSetup( 2, 0, this, SAMPLE_RATE, INITIAL_BUFFER_SIZE, 4 );
@@ -275,7 +275,8 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ofBackgroundGradient(ofColor(23, 114, 118), ofColor(5, 14, 36));
+//    ofBackgroundGradient(ofColor(23, 114, 118), ofColor(5, 14, 36));
+    ofBackground(0);
     ofNoFill();
     
     
@@ -313,8 +314,8 @@ void ofApp::draw(){
     ofRotateZ(rotateZValue);
     
     ofPushStyle();
-    glLineWidth(1);
-    ofSetColor(40, 40, 200, 120);
+    glLineWidth(0.1);
+    ofSetColor(255, 120);
     ofDrawLine(leftStart, rightStart);
     ofPopStyle();
     
@@ -329,12 +330,12 @@ void ofApp::draw(){
     pathMake.particleMoving(sizeSphere);
     pathMake.creatorDraw();
     
-    //    boxDraw( EB, ofColor(255,0,0,70) );
-    //    boxDraw( EE, ofColor(255,0,0,70) );
-    //    boxDraw( ES, ofColor(0,255,0,70) );
-    //    boxDraw( HB, ofColor(100,100,255,70) );
-    //    boxDraw( HE, ofColor(100,100,255,70) );
-    //    boxDraw( HF, ofColor(200,200,255,70) );
+        boxDraw( EB, ofColor(255,70,0,70) );
+        boxDraw( EE, ofColor(255,100,0,70) );
+        boxDraw( ES, ofColor(255,130,0,70) );
+        boxDraw( HB, ofColor(255,180,0,70) );
+        boxDraw( HE, ofColor(255,220,0,70) );
+        boxDraw( HF, ofColor(255,255,0,70) );
     
     cam.end();
     
@@ -346,7 +347,7 @@ void ofApp::draw(){
     //    ofDrawLine(ofGetWidth()*0.4, ofGetHeight()-10, ofGetWidth()*0.6, ofGetHeight()-10);
     
     ofSetColor( 140, 120, 210, 40 );
-    glLineWidth(0.7);
+    glLineWidth(0.1);
     ofDrawLine(lineRightXPos + ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop*1.2, lineRightXPos + ofGetWidth()*0.5-scoreWidth*0.5, ofGetHeight()-10);
     ofDrawLine(lineLeftXPos + ofGetWidth()*0.5-scoreWidth*0.5, score2DlineTop*1.2, lineLeftXPos + ofGetWidth()*0.5-scoreWidth*0.5, ofGetHeight()-10);
     ofPopStyle();
@@ -383,7 +384,7 @@ void ofApp::draw(){
         
     }
     
-    interfaceDrawing();
+//    interfaceDrawing();
     
     
 }
@@ -515,6 +516,7 @@ void ofApp::exit(){
 void ofApp::boxDraw( vector<ofVec3f> _vV, ofColor _c ){
     
     ofPushStyle();
+    glLineWidth(0.1);
     ofSetColor(_c);
     for (int i=0; i<_vV.size(); i+=8) {
         ofDrawLine( _vV[i+0], _vV[i+1] );
@@ -1153,7 +1155,7 @@ void ofApp::audioOut (ofSoundBuffer & buffer) {
     
     if(allPlay){
         
-        for (int i=0; i<buffer.getNumFrames(); i+=1){
+        for (int i=0; i<buffer.getNumFrames(); i+=2){
         
             waveRight = 0.0;
             waveLeft = 0.0;
