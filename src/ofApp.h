@@ -187,4 +187,6 @@ public:
     
     float lineLeftXPos, lineRightXPos;
     
+    
+    void drawInformation();
 };
