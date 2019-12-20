@@ -10,14 +10,11 @@ string informationStremTitle[6] = {"Run :", "Event", "Lumi Section", "Orbit :", 
 //--------------------------------------------------------------
 void ofApp::setup() {
 
-
-#ifdef DEBUG
-
-#else
-	ofSetDataPathRoot("../Resources/data");
-#endif
-
-
+//#ifdef DEBUG
+//
+//#else
+//	ofSetDataPathRoot("../Resources/data");
+//#endif
 
 	ofEnableSmoothing();
 
@@ -134,8 +131,8 @@ void ofApp::setup() {
 
 	rightStart = ofVec3f(0, 0, 500);
 	leftStart = ofVec3f(0, 0, -500);
-	leftVolumeRatio = 0;
-	rightVolumeRatio = 0;
+//	leftVolumeRatio = 0;
+//	rightVolumeRatio = 0;
 
 	protonPos = ofVec3f(0, 0, -500);
 
@@ -228,8 +225,8 @@ void ofApp::update() {
 	cam.worldToScreen(rightStart);
 	cam.worldToScreen(leftStart);
 
-	leftVolumeRatio = abs(sin(ofDegToRad((cam.getOrientationEuler().y - 90) * 0.5)));
-	rightVolumeRatio = ofMap(leftVolumeRatio, 0, 1, 1, 0);
+//	leftVolumeRatio = abs(sin(ofDegToRad((cam.getOrientationEuler().y - 90) * 0.5)));
+//	rightVolumeRatio = ofMap(leftVolumeRatio, 0, 1, 1, 0);
 
 	pathMake.creatorUpdate(sizeSphere);
 

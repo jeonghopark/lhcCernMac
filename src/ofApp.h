@@ -125,7 +125,7 @@ public:
     float sphereSpeed;
     
     ofVec3f leftStart, rightStart;
-    float leftVolumeRatio, rightVolumeRatio;
+//    float leftVolumeRatio, rightVolumeRatio;
     
     ofVec3f protonPos;
     ofSpherePrimitive protonA, protonB;
