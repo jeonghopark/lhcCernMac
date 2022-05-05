@@ -82,6 +82,8 @@ void ofApp::setup() {
     //    if (!devices.empty()) {
     //        settings.setOutDevice(devices[1]);
     //    }
+    auto devices = soundStream.getDeviceList();
+    settings.setOutDevice(devices[0]);
     settings.setOutListener(this);
     settings.bufferSize = INITIAL_BUFFER_SIZE;
     settings.sampleRate = SAMPLE_RATE;
