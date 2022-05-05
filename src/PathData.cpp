@@ -121,7 +121,7 @@ void PathData::histoDraw(){
         float _x2 = _lengthSort[i];
         float _y2 = _lengthSort[i];
         
-        float _alpha = ofMap( _y2, 0, 300, 100, 10 );
+        float _alpha = ofMap( _y2, 0, 300, 200, 110 );
         
         ofSetColor( ofColor::fromHsb(255, 0, 255, _alpha) );
         ofLine( 10, 1000 - 10 - _y2, _x2+20, 1000 - 10 - _y2 );
@@ -148,7 +148,7 @@ void PathData::degreeDraw(){
             _y2 = 0;
         }
         
-        float _alpha = ofMap( _y2, 0, 300, 100, 10 );
+        float _alpha = ofMap( _y2, 0, 300, 200, 110 );
         
         ofSetColor( ofColor::fromHsb(255, 0, 255, _alpha) );
         ofLine( 500, 1000 - 10 - _y2, _x2+520, 1000 - 10 - _y2 );
@@ -441,13 +441,13 @@ void PathData::pathPolyLineSetup(){
 void PathData::pathPolyLineDraw(){
     
     ofPushStyle();
-    ofSetLineWidth(0.1);
+    ofSetLineWidth(0.5);
     
     for (int i=0; i<pathPolyLines.size(); i++) {
-        if (pathPolyLines[i].size()==2) {
-            ofSetColor( 255,0,0, 160);
+        if (pathPolyLines[i].size() == 2) {
+            ofSetColor(255, 100, 100, 160);
         } else {
-            ofSetColor( 255,0,0, 200);
+            ofSetColor(255, 100, 100, 200);
         }
         pathPolyLines[i].draw();
     }
@@ -479,10 +479,10 @@ void PathData::particleMoving(float _f){
         else _indexChange = lineStep - 1;
         
         if ( _f > glm::length(_tempPath[_indexChange]) ) {
-            ofSetColor( 32, 48, 80, _alpha*0.5 );
+            ofSetColor( 132, 148, 180, _alpha * 1.0 );
             _pos = _tempPath[_indexChange];
         } else if ( _f < glm::length(pathPolyLines[i][0]) ) {
-            ofSetColor( 240, 184, 161, _alpha*0.5 );
+            ofSetColor( 240, 184, 161, _alpha * 1.0 );
         } else {
             ofSetColor( 240, 248, 255, _alpha );
         }
@@ -576,7 +576,7 @@ void PathData::creatorSetting(){
         for (int t = 0; t <= 360+_circleStep; t+=_circleStep) {
             float _rad = ofDegToRad(t);
             ofVec3f pt = point3D[i].p2 + point3D[i].radiusCreater * cos(_rad) * point3D[i].u + point3D[i].radiusCreater * sin(_rad) * point3D[i].v;
-            ofColor _c = ofColor(255,70);
+            ofColor _c = ofColor(255, 170);
             point3D[i].createrMesh.addColor(_c);
             point3D[i].createrMesh.addVertex(pt);
         }

@@ -153,7 +153,7 @@ void ofApp::setup() {
     for (int i = 0; i <= 72; i++) {
         ofVec3f _v = ofVec3f(sin(ofDegToRad(i * 5)), cos(ofDegToRad(i * 5)), 0);
         playCircleMesh.addVertex(_v);
-        playCircleMesh.addColor(ofColor(255, 30));
+        playCircleMesh.addColor(ofColor(255, 130));
     }
     
     for (int i = 0; i < 72; i++) {
@@ -273,8 +273,8 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     
-    //    ofBackgroundGradient(ofColor(23, 114, 118), ofColor(5, 14, 36));
-    ofBackground(0);
+    ofBackgroundGradient(ofColor(23, 114, 118), ofColor(5, 14, 36));
+//    ofBackground(0);
     ofNoFill();
     
     drawInformation();
@@ -332,23 +332,23 @@ void ofApp::draw() {
     pathMake.particleMoving(sizeSphere);
     pathMake.creatorDraw();
     
-    boxDraw(EB, ofColor(255, 70, 0, 70));
-    boxDraw(EE, ofColor(255, 100, 0, 70));
-    boxDraw(ES, ofColor(255, 130, 0, 70));
-    boxDraw(HB, ofColor(255, 180, 0, 70));
-    boxDraw(HE, ofColor(255, 220, 0, 70));
-    boxDraw(HF, ofColor(255, 255, 0, 70));
+    boxDraw(EB, ofColor(255, 70, 0, 170));
+    boxDraw(EE, ofColor(255, 100, 0, 170));
+    boxDraw(ES, ofColor(255, 130, 0, 170));
+    boxDraw(HB, ofColor(255, 180, 0, 170));
+    boxDraw(HE, ofColor(255, 220, 0, 170));
+    boxDraw(HF, ofColor(255, 255, 0, 170));
     
     cam.end();
     
     
     ofPushMatrix();
     ofPushStyle();
-    ofSetColor(255, 30);
+    ofSetColor(255, 130);
     ofDrawLine(ofGetWidth() * 0.5, score2DlineTop * 1.2, ofGetWidth() * 0.5, ofGetHeight() - 10);
     //    ofDrawLine(ofGetWidth()*0.4, ofGetHeight()-10, ofGetWidth()*0.6, ofGetHeight()-10);
     
-    ofSetColor(140, 120, 210, 40);
+    ofSetColor(140, 120, 210, 140);
     glLineWidth(0.1);
     ofDrawLine(lineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, lineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
     ofDrawLine(lineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, lineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
@@ -369,7 +369,7 @@ void ofApp::draw() {
 
 
 //--------------------------------------------------------------
-void ofApp::drawInformation() {
+void ofApp::drawInformation() {
     if (uiInformation) {
         
         ofPushMatrix();
@@ -400,7 +400,7 @@ void ofApp::drawInformation() {
 
         ofPushStyle();
         
-        ofSetColor(255, 50);
+        ofSetColor(255, 150);
         
         
         ofTranslate(0, 0);
@@ -586,7 +586,7 @@ void ofApp::exit() {
 void ofApp::boxDraw(vector<ofVec3f> _vV, ofColor _c) {
     
     ofPushStyle();
-    glLineWidth(0.1);
+    glLineWidth(0.3);
     ofSetColor(_c);
     
     for (int i = 0; i < _vV.size(); i += 8) {
@@ -1352,7 +1352,7 @@ void ofApp::interfaceDrawing() {
     ofPushStyle();
     ofNoFill();
     
-    ofSetColor(73, 164, 168, 100);
+    ofSetColor(73, 164, 168, 200);
     float _minLimitY = openIGFile.getPosition().y + 10;
     float _maxLimitY = resetView.getPosition().y + 15;
     ofDrawLine(speedCtrl.getPosition().x + 10, _minLimitY, speedCtrl.getPosition().x + 10, _maxLimitY);
