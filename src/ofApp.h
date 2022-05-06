@@ -46,8 +46,8 @@ public:
     ofSoundStream soundStream;
 
     
-    float lineRight;
-    float lineLeft;
+    float playLineRight;
+    float playLineLeft;
     
     int	maxHertz;
     
@@ -185,7 +185,7 @@ public:
     ofRectangle informationIcon;
     
     
-    float lineLeftXPos, lineRightXPos;
+    float playLineLeftXPos, playLineRightXPos;
     
     
     void drawInformation();

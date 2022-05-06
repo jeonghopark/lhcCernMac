@@ -87,15 +87,15 @@ void ofApp::setup() {
     
     
     
-    lineLeft = 0;
-    lineRight = 0;
+    playLineLeft = 0;
+    playLineRight = 0;
     
     float _linePos = ofGetWidth() * 0.5;
-    lineRightXPos = _linePos;
-    lineLeftXPos = _linePos;
+    playLineRightXPos = _linePos;
+    playLineLeftXPos = _linePos;
     
-    lineRightXPos = _linePos;
-    lineLeftXPos = _linePos;
+    playLineRightXPos = _linePos;
+    playLineLeftXPos = _linePos;
     
     volume = 0.85;
     speed = 0.4;
@@ -178,8 +178,8 @@ void ofApp::update() {
     
     spectrum->maxHz = maxHz;
     spectrum->minHz = minHz;
-    lineRight = lineSize;
-    lineLeft = lineSize;
+    playLineRight = lineSize;
+    playLineLeft = lineSize;
     
     if (allPlay) {
         
@@ -192,27 +192,27 @@ void ofApp::update() {
         }
         
         if (trigger) {
-            lineRightXPos += speed;
-            lineLeftXPos -= speed;
-            sizeSphere = (lineRightXPos - scoreWidth * 0.5) * 2.5;
+            playLineRightXPos += speed;
+            playLineLeftXPos -= speed;
+            sizeSphere = (playLineRightXPos - scoreWidth * 0.5) * 2.5;
         }
         
-        if (lineRightXPos > scoreWidth - 10) {
-            lineRightXPos = scoreWidth * 0.5;
+        if (playLineRightXPos > scoreWidth - 10) {
+            playLineRightXPos = scoreWidth * 0.5;
             sizeSphere = 0;
         }
         
-        if (lineLeftXPos < 10) {
-            lineLeftXPos = scoreWidth * 0.5;
+        if (playLineLeftXPos < 10) {
+            playLineLeftXPos = scoreWidth * 0.5;
         }
     }
     
     
     if (allPlay) {
         for (int n = 0; n < BIT; n++) {
-            ampRight[n] = (ampRight[n] * lineRight + spectrum->getAmp(lineRightXPos, n)) / (lineRight + 1);
+            ampRight[n] = (ampRight[n] * playLineRight + spectrum->getAmp(playLineRightXPos, n)) / (playLineRight + 1);
             hertzScaleRight[n] = int(spectrum->getFreq(n));
-            ampLeft[n] = (ampLeft[n] * lineLeft + spectrum->getAmp(lineLeftXPos, n)) / (lineLeft + 1);
+            ampLeft[n] = (ampLeft[n] * playLineLeft + spectrum->getAmp(playLineLeftXPos, n)) / (playLineLeft + 1);
             hertzScaleLeft[n] = int(spectrum->getFreq(n));
         }
     }
@@ -237,9 +237,9 @@ void ofApp::update() {
             ofSoundStreamStop();
             allPlay = false;
             spectrum->clearPixels();
-            lineRightXPos = scoreWidth * 0.5;
-            lineLeftXPos = scoreWidth * 0.5;
-            sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+            playLineRightXPos = scoreWidth * 0.5;
+            playLineLeftXPos = scoreWidth * 0.5;
+            sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
             
             loadEvent(bufferEventCopy[eventCount % bufferEventCopy.size()]);
             linePathHiddenCapture();
@@ -247,8 +247,8 @@ void ofApp::update() {
             trigger = false;
             protonPos = ofVec3f(0, 0, -1000);
             hitTime = ofGetElapsedTimeMillis();
-            lineLeft = lineSize;
-            lineRight = lineSize;
+            playLineLeft = lineSize;
+            playLineRight = lineSize;
             nextButton = true;
             allPlay = true;
             ofSoundStreamStart();
@@ -259,7 +259,7 @@ void ofApp::update() {
     
     rotateZValue = rotateZValue + rotateZFactor;
     
-    pathMake.score2DTriggerDraw(lineLeftXPos - scoreWidth * 0.5, lineRightXPos - scoreWidth * 0.5, 0.4);
+    pathMake.score2DTriggerDraw(playLineLeftXPos - scoreWidth * 0.5, playLineRightXPos - scoreWidth * 0.5, 0.4);
     
     
 }
@@ -346,8 +346,8 @@ void ofApp::draw() {
     
     ofSetColor(140, 120, 210, 140);
     glLineWidth(0.1);
-    ofDrawLine(lineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, lineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
-    ofDrawLine(lineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, lineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
+    ofDrawLine(playLineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, playLineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
+    ofDrawLine(playLineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, playLineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
     ofPopStyle();
     
     pathMake.score2dTriggerImg.draw(ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop);
@@ -831,8 +831,8 @@ void ofApp::openIgFile(string URL) {
 //--------------------------------------------------------------
 void ofApp::igLoadReset() {
     
-    lineLeft = 0;
-    lineRight = 0;
+    playLineLeft = 0;
+    playLineRight = 0;
     
     waveRight = 0.0;
     waveLeft = 0.0;
@@ -841,9 +841,9 @@ void ofApp::igLoadReset() {
     ofSoundStreamStop();
     spectrum->clearPixels();
     
-    lineRightXPos = scoreWidth * 0.5;
-    lineLeftXPos = scoreWidth * 0.5;
-    sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+    playLineRightXPos = scoreWidth * 0.5;
+    playLineLeftXPos = scoreWidth * 0.5;
+    sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
     
 }
 
@@ -857,8 +857,8 @@ void ofApp::keyPressed(int key) {
             if (allPlay) {
                 allPlay = false;
                 ofSoundStreamStop();
-                lineLeft = 0;
-                lineRight = 0;
+                playLineLeft = 0;
+                playLineRight = 0;
                 trigger = false;
                 protonPos = ofVec3f(0, 0, -1000);
                 hitTime = ofGetElapsedTimeMillis();
@@ -870,11 +870,11 @@ void ofApp::keyPressed(int key) {
             } else {
                 protonPos = ofVec3f(0, 0, -1000);
                 hitTime = ofGetElapsedTimeMillis();
-                lineLeft = lineSize;
-                lineRight = lineSize;
-                lineRightXPos = scoreWidth * 0.5;
-                lineLeftXPos = scoreWidth * 0.5;
-                sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+                playLineLeft = lineSize;
+                playLineRight = lineSize;
+                playLineRightXPos = scoreWidth * 0.5;
+                playLineLeftXPos = scoreWidth * 0.5;
+                sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
                 allPlay = true;
                 ofSoundStreamStart();
             }
@@ -1064,9 +1064,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
             ofSoundStreamStop();
             allPlay = false;
             spectrum->clearPixels();
-            lineRightXPos = scoreWidth * 0.5;
-            lineLeftXPos = scoreWidth * 0.5;
-            sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+            playLineRightXPos = scoreWidth * 0.5;
+            playLineLeftXPos = scoreWidth * 0.5;
+            sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
             
             trigger = false;
             protonPos = ofVec3f(0, 0, -1000);
@@ -1090,9 +1090,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
             ofSoundStreamStop();
             allPlay = false;
             spectrum->clearPixels();
-            lineRightXPos = scoreWidth * 0.5;
-            lineLeftXPos = scoreWidth * 0.5;
-            sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+            playLineRightXPos = scoreWidth * 0.5;
+            playLineLeftXPos = scoreWidth * 0.5;
+            sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
             
             trigger = false;
             protonPos = ofVec3f(0, 0, -1000);
@@ -1116,9 +1116,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
     if (resetView.inside(x, y)) {
         bResetView = true;
         
-        lineRightXPos = scoreWidth * 0.5;
-        lineLeftXPos = scoreWidth * 0.5;
-        sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+        playLineRightXPos = scoreWidth * 0.5;
+        playLineLeftXPos = scoreWidth * 0.5;
+        sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
         trigger = false;
         protonPos = ofVec3f(0, 0, -1000);
         hitTime = ofGetElapsedTimeMillis();
@@ -1144,12 +1144,12 @@ void ofApp::windowResized(int w, int h) {
     allPlay = false;
     ofSoundStreamStop();
     
-    lineLeft = 0;
-    lineRight = 0;
+    playLineLeft = 0;
+    playLineRight = 0;
     
-    lineRightXPos = scoreWidth * 0.5;
-    lineLeftXPos = scoreWidth * 0.5;
-    sizeSphere = (lineRightXPos - ofGetWidth() * 0.5) * 2.5;
+    playLineRightXPos = scoreWidth * 0.5;
+    playLineLeftXPos = scoreWidth * 0.5;
+    sizeSphere = (playLineRightXPos - ofGetWidth() * 0.5) * 2.5;
     
     for (int i = 0; i < 514 ; i ++) {
         sineBufferRight[i] = sines[i];
