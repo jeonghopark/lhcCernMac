@@ -19,13 +19,7 @@ void ofApp::setup() {
     ofEnableSmoothing();
     
     ofBackground(ofColor(5, 14, 36));
-    //    ofSetupScreen();
     ofSetFrameRate(60);
-    //    ofEnableAlphaBlending();
-    
-    //    ofEnablePointSprites();
-    
-    //    ofEnableDepthTest();
     
     pointScale = 100;
     pointScaleDir = 100;
