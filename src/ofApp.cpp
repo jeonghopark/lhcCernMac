@@ -1324,7 +1324,6 @@ void ofApp::interfaceSetting() {
     speedCtrl.set(_x - 30, ofGetHeight() - 55 - 15, 20, 20);
     volumeCtrl.set(_x - 60, ofGetHeight() - 142 - 15, 20, 20);
     
-    
 }
 
 
@@ -1402,7 +1401,6 @@ void ofApp::interfaceDrawing() {
         ofSetColor(_offImgAlpha);
         volumeImg.draw(volumeCtrl);
     }
-    
     
     if (informationIcon.inside(mouseX, mouseY)) {
         ofSetColor(_onImgAlpha);
