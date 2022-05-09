@@ -678,7 +678,17 @@ vector<ofVec3f> ofApp::boxVectorH(ofBuffer _b, string _p, float _l, float _r) {
     
     bool extraFound = false;
     bool extraFoundEvent = false;
+
+    if(_b.size()) {
+        for (ofBuffer::Line it = _b.getLines().begin(), end = _b.getLines().end(); it != end; ++it) {
+            string _line = *it;
+        }
+    }
     
+    
+
+    
+
     while (!_b.isLastLine() && !extraFound) {
         string _line = _b.getNextLine();
         
