@@ -44,7 +44,7 @@ void ofApp::setup() {
     coordY.load("verdana.ttf", 9);
     information.load("verdana.ttf", 9);
     
-    uiInformation = false;
+    uiInforOnOff = false;
     
     cam.setAutoDistance(false);
     cam.setDistance(1650);
@@ -56,7 +56,7 @@ void ofApp::setup() {
     captureW = ofGetWidth();
     captureH = BIT;
     
-    for (int i = 0; i < 514 ; i ++) {
+    for (int i = 0; i < 514; i ++) {
         sineBufferRight[i] = sines[i];
         sineBufferLeft[i] = sines[i];
     }
@@ -356,17 +356,16 @@ void ofApp::draw() {
     
     ofPopMatrix();
     
-    
-    
     //    interfaceDrawing();
-    
     
 }
 
 
+
 //--------------------------------------------------------------
 void ofApp::drawInformation() {
-    if (uiInformation) {
+    
+    if (uiInforOnOff) {
         
         ofPushMatrix();
         ofPushStyle();
@@ -397,7 +396,6 @@ void ofApp::drawInformation() {
         ofPushStyle();
         
         ofSetColor(255, 150);
-        
         
         ofTranslate(0, 0);
         for (int i = 0; i<vMeshPos1.size(); i++) {
@@ -439,7 +437,6 @@ void ofApp::drawInformation() {
         for (int i = 0; i<vMeshDir1.size(); i++) {
             ofDrawLine(0, i * 3, 0 + vMeshDir2[i].y, i * 3);
         }
-        
         
         ofPopStyle();
         ofPopMatrix();
@@ -904,7 +901,7 @@ void ofApp::keyReleased(int key) {
             break;
             
         case 'g':
-            uiInformation = !uiInformation;
+            uiInforOnOff = !uiInforOnOff;
             break;
             
         default:

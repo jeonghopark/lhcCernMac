@@ -83,7 +83,7 @@ public:
     float pointScaleDir;
     
     ofTrueTypeFont information;
-    bool uiInformation;
+    bool uiInforOnOff;
     
     ofTrueTypeFont interface;
     int interfaceMenuIndex;
