@@ -694,7 +694,6 @@ vector<ofVec3f> ofApp::boxVectorH(ofBuffer _b, string _p, float _l, float _r) {
                 }
                 
                 int i = 0;
-                
                 while ((i = _line.find_first_of("()[]", i)) != std::string::npos) {
                     _line.erase(i, 1);
                 }
@@ -1020,7 +1019,6 @@ void ofApp::mouseDragged(int x, int y, int button) {
 void ofApp::mousePressed(int x, int y, int button) {
     
     if (bufferEventCopy.size() > 0) {
-        
         if (nextEvent.inside(x, y) && !bNextEvent) {
             bNextEvent = true;
         }
@@ -1028,7 +1026,6 @@ void ofApp::mousePressed(int x, int y, int button) {
         if (prevEvent.inside(x, y) && !bPrevEvent) {
             bPrevEvent = true;
         }
-        
     }
     
 }
@@ -1273,16 +1270,12 @@ void ofApp::audioOut(ofSoundBuffer & buffer) {
             //            if (waveLine > 1.0) waveLine = 1.0;
             //            if (waveLine < -1.0) waveLine -= 1.0;
             if (waveRight > 1.0) waveRight = 1.0;
-            
             if (waveRight < -1.0) waveRight -= 1.0;
-            
             if (waveLeft > 1.0) waveLeft = 1.0;
-            
             if (waveLeft < -1.0) waveLeft -= 1.0;
             
             buffer[i * buffer.getNumChannels() + 0] = waveLeft / 1.0;
             buffer[i * buffer.getNumChannels() + 1] = waveRight / 1.0;
-            
         }
     } else {
         for (int i = 0; i < buffer.getNumFrames(); i++) {
