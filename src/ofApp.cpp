@@ -483,7 +483,6 @@ void ofApp::loadEvent(ofBuffer _b) {
                 }
                 
                 int i = 0;
-                
                 while ((i = line.find_first_of("()[]", i)) != std::string::npos) {
                     line.erase(i, 1);
                 }
@@ -568,9 +567,7 @@ void ofApp::loadEvent(ofBuffer _b) {
 
 //--------------------------------------------------------------
 void ofApp::exit() {
-    
-    //    std::exit(0);
-    
+        
 }
 
 
