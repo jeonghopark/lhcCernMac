@@ -793,11 +793,9 @@ void ofApp::openIgFile(string URL) {
             
             eventCount = 0;
             
-            
             trigger = false;
             protonPos = ofVec3f(0, 0, -1000);
             hitTime = ofGetElapsedTimeMillis();
-            
             
             igLoadReset();
             
@@ -815,7 +813,6 @@ void ofApp::openIgFile(string URL) {
             
         }
     }
-    
     
 }
 
