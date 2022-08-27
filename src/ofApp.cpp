@@ -682,6 +682,24 @@ vector<ofVec3f> ofApp::boxVectorH(ofBuffer _b, string _p, float _l, float _r) {
     if(_b.size()) {
         for (ofBuffer::Line it = _b.getLines().begin(), end = _b.getLines().end(); it != end; ++it) {
             string _line = *it;
+            if (ofIsStringInString(_line, _p) && !ofIsStringInString(_line, "energy"))  {
+                extraFound = true;
+                bool isFirstLine = true;
+                extraFoundEvent = true;
+                
+                if (_line != "]") {
+                    if (isFirstLine) {
+                        _line.erase(0, 16);
+                        isFirstLine = false;
+                    }
+                    cout << _line << endl;
+                    int i = 0;
+                    while ((i = _line.find_first_of("()[]", i)) != std::string::npos) {
+                        _line.erase(i, 1);
+                    }
+
+                }
+            }
         }
     }
     

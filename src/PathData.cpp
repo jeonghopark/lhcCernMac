@@ -357,7 +357,7 @@ float PathData::degreeCal( vector<ofVec3f> _v ){
     float _fDegree = 0;
     
     if (_v.size()==2) {
-        return _fDegree = 0;
+        _fDegree = 0;
     } else {
         for(int i=0; i<_v.size()-1; i++) {
             
@@ -366,13 +366,16 @@ float PathData::degreeCal( vector<ofVec3f> _v ){
             float fDot = _v[i+1].x * _v[i].x + _v[i+1].y * _v[i].y + _v[i+1].z * _v[i].z;
             
             float _f = acos(fDot/(fA*fB)) * 180 / PI;
-            return _fDegree = abs(_fDegree + _f);
+            _fDegree = abs(_fDegree + _f);
             
         }
         
     }
     
+    return _fDegree;
+    
 }
+
 
 //--------------------------------------------------------------
 float PathData::twoPointsDegreeCal( vector<ofVec3f> _v ){
