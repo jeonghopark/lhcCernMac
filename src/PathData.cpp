@@ -44,7 +44,7 @@ void PathData::setup( vector<ofVec3f> _a, vector<ofVec3f> _b, vector<ofVec3f> _c
         lineDirection.push_back( lineDirectionCal( curveFomulaCal( _a[i], _b[i], _c[i], _d[i] ) ) );
     }
     
-    widthScreen = 1280;
+    widthScreen = ofGetWidth();
     heightScreen = 1100;
     
     capturePixels.allocate(widthScreen, 512, OF_IMAGE_COLOR);

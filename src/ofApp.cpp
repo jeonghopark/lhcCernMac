@@ -346,11 +346,11 @@ void ofApp::draw() {
     
     ofSetColor(140, 120, 210, 140);
     glLineWidth(0.1);
-    ofDrawLine(playLineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, playLineRightXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
-    ofDrawLine(playLineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop * 1.2, playLineLeftXPos + ofGetWidth() * 0.5 - scoreWidth * 0.5, ofGetHeight() - 10);
+    ofDrawLine(playLineRightXPos, score2DlineTop * 1.2, playLineRightXPos, ofGetHeight() - 10);
+    ofDrawLine(playLineLeftXPos, score2DlineTop * 1.2, playLineLeftXPos, ofGetHeight() - 10);
     ofPopStyle();
     
-    pathMake.score2dTriggerImg.draw(ofGetWidth() * 0.5 - scoreWidth * 0.5, score2DlineTop);
+    pathMake.score2dTriggerImg.draw(0, score2DlineTop);
     //        spectrum->spectrumDraw();
     ofPopMatrix();
     
