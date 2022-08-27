@@ -97,11 +97,11 @@
 				B3FE34F6428B27049B9EABA5 /* SpectrumDrawer.h */,
 				27491242152158125A1B6CC5 /* LHCIgFileLoad.cpp */,
 				CDA08BDE1B44F38E69CF55F2 /* PathData.h */,
+				183F979CC49D0F68AA752408 /* PathData.cpp */,
 				8E355FE2AA1A17F8CE165960 /* unzip.h */,
 				4C929FE6CF6420BD522AF940 /* LHCIgFileLoad.h */,
 				5C36A68916830A95C13EF2E7 /* SpectrumDrawer.cpp */,
 				34C8D5080BCCF35D1525D61B /* ioapi.h */,
-				183F979CC49D0F68AA752408 /* PathData.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
