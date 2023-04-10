@@ -77,7 +77,7 @@ void ofApp::setup() {
     //        settings.setOutDevice(devices[1]);
     //    }
     auto devices = soundStream.getDeviceList();
-    settings.setOutDevice(devices[0]);
+    settings.setOutDevice(devices[1]);
     settings.setOutListener(this);
     settings.bufferSize = INITIAL_BUFFER_SIZE;
     settings.sampleRate = SAMPLE_RATE;
@@ -280,7 +280,7 @@ void ofApp::draw() {
     
     cam.begin();
     
-    ofRotateY(90);
+    ofRotateYDeg(90);
     
     ofPushMatrix();
     float modelview[16];
@@ -309,7 +309,7 @@ void ofApp::draw() {
     ofPopMatrix();
     
     
-    ofRotateZ(rotateZValue);
+    ofRotateZDeg(rotateZValue);
     
     ofPushStyle();
     glLineWidth(0.1);
@@ -777,7 +777,7 @@ void ofApp::linePathHiddenCapture() {
     _captureImage.allocate(captureW, captureH, OF_IMAGE_COLOR);
     
     if (_p.size() > 0) {
-        _captureImage.setFromPixels(_p.getPixels(), captureW, captureH, OF_IMAGE_COLOR);
+        _captureImage.setFromPixels(_p.getData(), captureW, captureH, OF_IMAGE_COLOR);
         _captureImage.mirror(true, false);
         spectrum->loadImageSpectrum(_captureImage);
     }
