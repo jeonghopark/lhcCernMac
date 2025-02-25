@@ -212,7 +212,7 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
     }
     ofPopStyle();
     
-    score2dTriggerImg.setFromPixels(score2D.getPixels(), widthScreen, 512, OF_IMAGE_COLOR_ALPHA);
+    score2dTriggerImg.setFromPixels(score2D.getData(), widthScreen, 512, OF_IMAGE_COLOR_ALPHA);
     
 }
 

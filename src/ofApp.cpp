@@ -77,7 +77,7 @@ void ofApp::setup() {
     //        settings.setOutDevice(devices[1]);
     //    }
     auto devices = soundStream.getDeviceList();
-    settings.setOutDevice(devices[1]);
+    settings.setOutDevice(devices[3]);
     settings.setOutListener(this);
     settings.bufferSize = INITIAL_BUFFER_SIZE;
     settings.sampleRate = SAMPLE_RATE;
@@ -269,7 +269,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     
-    ofBackgroundGradient(ofColor(23, 114, 118), ofColor(5, 14, 36));
+    ofBackgroundGradient(ofColor(23, 114, 128), ofColor(5, 14, 36));
 //    ofBackground(0);
     ofNoFill();
     
@@ -288,19 +288,20 @@ void ofApp::draw() {
     //    glPushMatrix();
     glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
     
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (i == j)
                 modelview[i * 4 + j] = 1.0;
             else
                 modelview[i * 4 + j] = 0.0;
         }
+    }
     
     glLoadMatrixf(modelview);
     
     float _speedFactorSphere = sizeSphere * 1.05;
     
-    for (int i = 0; i <= playCircleMesh.getNumVertices(); i++) {
+    for (int i = 0; i < playCircleMesh.getNumVertices(); i++) {
         ofVec3f _v  = ofVec3f(sin(ofDegToRad(i * 5)) * _speedFactorSphere, cos(ofDegToRad(i * 5)) * _speedFactorSphere, 0);
         playCircleMesh.setVertex(i, _v);
     }
@@ -692,7 +693,7 @@ vector<ofVec3f> ofApp::boxVectorH(ofBuffer _b, string _p, float _l, float _r) {
                         _line.erase(0, 16);
                         isFirstLine = false;
                     }
-                    cout << _line << endl;
+//                    cout << _line << endl;
                     int i = 0;
                     while ((i = _line.find_first_of("()[]", i)) != std::string::npos) {
                         _line.erase(i, 1);

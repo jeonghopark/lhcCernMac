@@ -6,7 +6,7 @@
 ################################################################################
 # OF ROOT
 #   The location of your root openFrameworks installation
-#       (default) OF_ROOT = ../../../../openFrameworks/../openFrameworks/openFrameworks/../openFrameworks/
+#       (default) OF_ROOT = ../../.. 
 ################################################################################
 OF_ROOT = /Users/jeonghopark/openFrameworks
 
@@ -140,3 +140,9 @@ OF_ROOT = /Users/jeonghopark/openFrameworks
 ################################################################################
 # PROJECT_CXX = 
 # PROJECT_CC = 
+
+# osx template
+
+# Uncomment/comment below to switch between C++11 and C++17 ( or newer ). On macOS C++17 needs 10.15 or above.
+# export MAC_OS_MIN_VERSION = 10.15
+# export MAC_OS_CPP_VER = -std=c++17
