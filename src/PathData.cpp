@@ -191,13 +191,13 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
         float _baseFQ = 80;
         
         if (_di<0) {
-            float _startL = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
+            float _startL = widthScreen * 0.5 - pathPolyLines[i][0].length() * _lengthRatio;
             for (int k=0; k>-(int)_x2; k--) {
                 float _c = ofMap(k, -_x2, 0, 0, _alpha);
-                if ((int)(_l - widthScreen * 0.5)==(k-(int)_startL)){
+                if ((int)(_l + widthScreen * 0.5)==(k+(int)_startL)){
                     _c = 255;
                 }
-                safeSetColor(score2D, k-(int)_startL, (int)_y2-512-_baseFQ, ofColor(255,_c));
+                safeSetColor(score2D, k+(int)_startL, (int)_y2-512-_baseFQ, ofColor(255,_c));
 //                for (int l=0; l<20; l++) {
 //                    score2D.setColor(k-(int)_startL, _y2-512-_baseFQ-l+10, ofColor(255,255));
 //                }

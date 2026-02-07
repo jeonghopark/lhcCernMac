@@ -12,11 +12,23 @@ An interactive audiovisual application that converts particle physics data from 
 
 ## Features
 
-- Sonification of CERN CMS detector event data using additive synthesis (512 frequency bins, 44.1kHz)
+- Sonification of CERN CMS detector event data (512 frequency bins, 44.1kHz)
+- **Dual audio engine** with real-time switching:
+  - **Additive Synthesis**: 512 independent sine oscillators with continuous phase tracking. Warm, harmonic tones.
+  - **IFFT Synthesis**: 4096-point Inverse FFT with overlap-add. Frequency-mapped spectrum reconstruction with coherent phase accumulation. Textured, spectral character.
 - Real-time 3D visualization of detector geometry (EB, EE, ES, HB, HE, HF) and particle trajectories
 - Scrolling spectrogram display synchronized with audio playback
 - Interactive controls: event navigation, auto-play, speed/volume adjustment
 - Drag & drop support for loading .ig event files
+
+## Controls
+
+| Key | Action |
+|-----|--------|
+| Space | Play / Stop |
+| M | Toggle audio engine (Additive / IFFT) |
+
+Current audio engine mode is displayed at the bottom-left corner of the screen.
 
 ## Data
 

@@ -61,6 +61,21 @@ void ofApp::setup() {
         sineBufferLeft[i] = sines[i];
     }
     
+    // IFFT engine init
+    useIFFT = false;
+    ifftReadPos = FFT_SIZE; // force initial computation
+    for (int i = 0; i < FFT_SIZE; i++) {
+        windowFunc[i] = 0.5f * (1.0f - cos(2.0f * PI * i / (FFT_SIZE - 1)));
+        ifftBufferLeft[i] = 0;
+        ifftBufferRight[i] = 0;
+        ifftOverlapLeft[i] = 0;
+        ifftOverlapRight[i] = 0;
+    }
+    for (int i = 0; i < FFT_HALF; i++) {
+        ifftPhaseLeft[i] = 0;
+        ifftPhaseRight[i] = 0;
+    }
+
     maxHertz = 4000;
     spectrum = new SpectrumDrawer(1, maxHertz);
     
@@ -356,14 +371,22 @@ void ofApp::draw() {
     ofDrawLine(playLineLeftXPos, score2DlineTop * 1.2, playLineLeftXPos, ofGetHeight() - 10);
     ofPopStyle();
     
-    pathMake.score2dTriggerImg.draw(0, score2DlineTop);
+    float spectrumH = ofGetHeight() * 0.25;
+    pathMake.score2dTriggerImg.draw(0, ofGetHeight() - spectrumH, ofGetWidth(), spectrumH);
     //        spectrum->spectrumDraw();
     ofPopMatrix();
     
     ofPopMatrix();
     
     interfaceDrawing();
-    
+
+    // Display audio engine mode
+    ofPushStyle();
+    ofSetColor(useIFFT ? ofColor(255, 180, 50) : ofColor(50, 200, 255));
+    information.drawString(useIFFT ? "IFFT" : "Additive", 10, ofGetHeight() - 15);
+    information.drawString("[M] to switch", 10, ofGetHeight() - 3);
+    ofPopStyle();
+
 }
 
 
@@ -906,11 +929,16 @@ void ofApp::keyPressed(int key) {
             }
             
             break;
-            
+
+        case 'm':
+            useIFFT = !useIFFT;
+            cout << "Audio Engine: " << (useIFFT ? "IFFT" : "Additive") << endl;
+            break;
+
         default:
             break;
     }
-    
+
 }
 
 
@@ -1257,58 +1285,190 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels) {
 
 
 //--------------------------------------------------------------
+void ofApp::computeIFFT(float* ampSpectrum, int* hertzScale, float* phaseAccum, float* outBuffer, int N) {
+    // N = FFT_SIZE (4096)
+    // ampSpectrum[BIT] = amplitude per spectrum line
+    // hertzScale[BIT] = frequency in Hz per spectrum line
+    // phaseAccum[FFT_HALF] = phase accumulator per FFT bin (persistent across calls)
+    int halfN = N / 2;
+    int hopSize = N / 2;
+
+    // Clear FFT bins
+    float re[4096], im[4096];
+    for (int k = 0; k < N; k++) {
+        re[k] = 0;
+        im[k] = 0;
+    }
+
+    // Advance phase for each bin based on its frequency, then place amplitude
+    // Phase increment per hop: dPhi = 2*PI * freq * hopSize / sampleRate
+    // This ensures continuous phase across hops => clean tonal output
+
+    // First: accumulate amplitudes into FFT bins with proper phase
+    for (int n = 0; n < BIT; n++) {
+        if (ampSpectrum[n] < 0.00001f) continue;
+
+        int hz = hertzScale[n];
+        if (hz <= 0) continue;
+
+        // Map Hz to FFT bin
+        int bin = (int)((float)hz * N / (float)SAMPLE_RATE + 0.5f);
+        if (bin <= 0 || bin >= halfN) continue;
+
+        // Advance phase coherently based on frequency
+        float phaseInc = TWO_PI * (float)hz * (float)hopSize / (float)SAMPLE_RATE;
+        phaseAccum[bin] += phaseInc;
+        // Keep phase in range
+        while (phaseAccum[bin] > TWO_PI) phaseAccum[bin] -= TWO_PI;
+        while (phaseAccum[bin] < 0) phaseAccum[bin] += TWO_PI;
+
+        float mag = ampSpectrum[n];
+        re[bin] += mag * cosf(phaseAccum[bin]);
+        im[bin] += mag * sinf(phaseAccum[bin]);
+    }
+
+    // Conjugate symmetry for real-valued output
+    for (int k = 1; k < halfN; k++) {
+        re[N - k] = re[k];
+        im[N - k] = -im[k];
+    }
+    re[0] = 0; im[0] = 0;
+    re[halfN] = 0; im[halfN] = 0;
+
+    // Cooley-Tukey IFFT (in-place)
+    // Bit-reversal permutation
+    int j = 0;
+    for (int i = 0; i < N; i++) {
+        if (i < j) {
+            std::swap(re[i], re[j]);
+            std::swap(im[i], im[j]);
+        }
+        int m = N >> 1;
+        while (m >= 1 && j >= m) {
+            j -= m;
+            m >>= 1;
+        }
+        j += m;
+    }
+
+    // Butterfly stages (IFFT: positive exponent)
+    for (int step = 2; step <= N; step <<= 1) {
+        int halfStep = step >> 1;
+        float angle = TWO_PI / step;
+        float wRe = cosf(angle);
+        float wIm = sinf(angle);
+
+        for (int group = 0; group < N; group += step) {
+            float tRe = 1.0f, tIm = 0.0f;
+            for (int pair = 0; pair < halfStep; pair++) {
+                int idx1 = group + pair;
+                int idx2 = idx1 + halfStep;
+                float uRe = re[idx1], uIm = im[idx1];
+                float vRe = tRe * re[idx2] - tIm * im[idx2];
+                float vIm = tRe * im[idx2] + tIm * re[idx2];
+                re[idx1] = uRe + vRe;
+                im[idx1] = uIm + vIm;
+                re[idx2] = uRe - vRe;
+                im[idx2] = uIm - vIm;
+                float newTRe = tRe * wRe - tIm * wIm;
+                tIm = tRe * wIm + tIm * wRe;
+                tRe = newTRe;
+            }
+        }
+    }
+
+    // Normalize (1/N) and apply Hann window
+    float invN = 1.0f / N;
+    // Scale to match additive engine level (~BIT oscillators / 20)
+    float outputGain = (float)BIT / 20.0f;
+    for (int i = 0; i < N; i++) {
+        outBuffer[i] = re[i] * invN * windowFunc[i] * outputGain;
+    }
+}
+
+//--------------------------------------------------------------
 void ofApp::audioOut(ofSoundBuffer & buffer) {
     
     if (allPlay) {
-        
-        for (int i = 0; i < buffer.getNumFrames(); i += 2) {
-            
-            waveRight = 0.0;
-            waveLeft = 0.0;
-            
-            for (int n = 0; n < BIT; n += 1) {
-                
-                if (ampLeft[n] > 0.00001) {
-                    phasesLeft[n] += 512. / (44100.0 / (hertzScaleLeft[n]));
-                    
-                    if (phasesLeft[n] >= 511) phasesLeft[n] -= 512;
-                    
-                    if (phasesLeft[n] < 0) phasesLeft[n] = 0;
-                    
-                    //                    remainderLeft = phasesLeft[n+1] - floor(phasesLeft[n+1]);
-                    //                    waveLeft+=(float) ((1-remainderLeft) * sineBufferLeft[1+ (long) phasesLeft[n+1]] + remainderLeft * sineBufferLeft[2+(long) phasesLeft[n+1]])*ampLeft[n+1];
-                    
-                    waveLeft += (sineBufferLeft[1 + (long)phasesLeft[n]]) * ampLeft[n];
+
+        if (!useIFFT) {
+            // === ADDITIVE SYNTHESIS ===
+            for (int i = 0; i < buffer.getNumFrames(); i += 2) {
+
+                waveRight = 0.0;
+                waveLeft = 0.0;
+
+                for (int n = 0; n < BIT; n += 1) {
+
+                    if (ampLeft[n] > 0.00001) {
+                        phasesLeft[n] += 512. / (44100.0 / (hertzScaleLeft[n]));
+                        if (phasesLeft[n] >= 511) phasesLeft[n] -= 512;
+                        if (phasesLeft[n] < 0) phasesLeft[n] = 0;
+                        waveLeft += (sineBufferLeft[1 + (long)phasesLeft[n]]) * ampLeft[n];
+                    }
+
+                    if (ampRight[n] > 0.00001) {
+                        phasesRight[n] += 512. / (44100.0 / (hertzScaleRight[n]));
+                        if (phasesRight[n] >= 511) phasesRight[n] -= 512;
+                        if (phasesRight[n] < 0) phasesRight[n] = 0;
+                        waveRight += (sineBufferRight[1 + (long)phasesRight[n]]) * ampRight[n];
+                    }
                 }
-                
-                if (ampRight[n] > 0.00001) {
-                    phasesRight[n] += 512. / (44100.0 / (hertzScaleRight[n]));
-                    
-                    if (phasesRight[n] >= 511) phasesRight[n] -= 512;
-                    
-                    if (phasesRight[n] < 0) phasesRight[n] = 0;
-                    
-                    //                    remainderRight = phasesRight[n] - floor(phasesRight[n]);
-                    //                    waveRight += (float) ((1-remainderRight) * sineBufferRight[1+ (long) phasesRight[n]] + remainderRight * sineBufferRight[2+(long) phasesRight[n]])*ampRight[n];
-                    
-                    waveRight += (sineBufferRight[1 + (long)phasesRight[n]]) * ampRight[n];
-                }
-                
+
+                waveRight /= 20.0;
+                waveLeft /= 20.0;
+
+                if (waveRight > 1.0) waveRight = 1.0;
+                if (waveRight < -1.0) waveRight = -1.0;
+                if (waveLeft > 1.0) waveLeft = 1.0;
+                if (waveLeft < -1.0) waveLeft = -1.0;
+
+                buffer[i * buffer.getNumChannels() + 0] = waveLeft;
+                buffer[i * buffer.getNumChannels() + 1] = waveRight;
             }
-            
-            //            waveLine /= 20.0;
-            waveRight /= 20.0;
-            waveLeft /= 20.0;
-            
-            //            if (waveLine > 1.0) waveLine = 1.0;
-            //            if (waveLine < -1.0) waveLine -= 1.0;
-            if (waveRight > 1.0) waveRight = 1.0;
-            if (waveRight < -1.0) waveRight -= 1.0;
-            if (waveLeft > 1.0) waveLeft = 1.0;
-            if (waveLeft < -1.0) waveLeft -= 1.0;
-            
-            buffer[i * buffer.getNumChannels() + 0] = waveLeft / 1.0;
-            buffer[i * buffer.getNumChannels() + 1] = waveRight / 1.0;
+        } else {
+            // === IFFT SYNTHESIS ===
+            int hopSize = FFT_SIZE / 2; // 50% overlap
+
+            for (int i = 0; i < buffer.getNumFrames(); i++) {
+
+                // When we've consumed the hop, compute new IFFT frame
+                if (ifftReadPos >= hopSize) {
+                    ifftReadPos = 0;
+
+                    // Shift overlap buffer
+                    for (int k = 0; k < hopSize; k++) {
+                        ifftOverlapLeft[k] = ifftBufferLeft[k + hopSize];
+                        ifftOverlapRight[k] = ifftBufferRight[k + hopSize];
+                    }
+                    for (int k = hopSize; k < FFT_SIZE; k++) {
+                        ifftOverlapLeft[k] = 0;
+                        ifftOverlapRight[k] = 0;
+                    }
+
+                    // Compute new IFFT frames with frequency mapping
+                    computeIFFT(ampLeft, hertzScaleLeft, ifftPhaseLeft, ifftBufferLeft, FFT_SIZE);
+                    computeIFFT(ampRight, hertzScaleRight, ifftPhaseRight, ifftBufferRight, FFT_SIZE);
+
+                    // Overlap-add: add previous tail to current start
+                    for (int k = 0; k < hopSize; k++) {
+                        ifftBufferLeft[k] += ifftOverlapLeft[k];
+                        ifftBufferRight[k] += ifftOverlapRight[k];
+                    }
+                }
+
+                float sL = ifftBufferLeft[ifftReadPos];
+                float sR = ifftBufferRight[ifftReadPos];
+                ifftReadPos++;
+
+                if (sL > 1.0f) sL = 1.0f;
+                if (sL < -1.0f) sL = -1.0f;
+                if (sR > 1.0f) sR = 1.0f;
+                if (sR < -1.0f) sR = -1.0f;
+
+                buffer[i * buffer.getNumChannels() + 0] = sL;
+                buffer[i * buffer.getNumChannels() + 1] = sR;
+            }
         }
     } else {
         for (int i = 0; i < buffer.getNumFrames(); i++) {

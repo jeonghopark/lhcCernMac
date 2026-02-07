@@ -189,4 +189,18 @@ public:
     
     
     void drawInformation();
+
+    // Audio engine mode: Additive vs IFFT
+    bool useIFFT;
+    static const int FFT_SIZE = 4096;
+    static const int FFT_HALF = 2048;
+    float ifftBufferLeft[4096];
+    float ifftBufferRight[4096];
+    float ifftOverlapLeft[4096];
+    float ifftOverlapRight[4096];
+    float windowFunc[4096];
+    float ifftPhaseLeft[2048];
+    float ifftPhaseRight[2048];
+    int ifftReadPos;
+    void computeIFFT(float* ampSpectrum, int* hertzScale, float* phaseAccum, float* outBuffer, int N);
 };
