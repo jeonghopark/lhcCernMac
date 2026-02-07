@@ -47,7 +47,7 @@ void ofApp::setup() {
     uiInforOnOff = false;
     
     cam.setAutoDistance(false);
-    cam.setDistance(1650);
+    cam.setDistance(1050);
     
     
     glEnable(GL_POINT_SMOOTH);
@@ -77,7 +77,12 @@ void ofApp::setup() {
     //        settings.setOutDevice(devices[1]);
     //    }
     auto devices = soundStream.getDeviceList();
-    settings.setOutDevice(devices[3]);
+    for (auto& dev : devices) {
+        if (dev.name.find("MacBook Pro") != string::npos && dev.outputChannels >= 2) {
+            settings.setOutDevice(dev);
+            break;
+        }
+    }
     settings.setOutListener(this);
     settings.bufferSize = INITIAL_BUFFER_SIZE;
     settings.sampleRate = SAMPLE_RATE;
@@ -269,7 +274,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     
-    ofBackgroundGradient(ofColor(23, 114, 128), ofColor(5, 14, 36));
+    ofBackgroundGradient(ofColor(13, 90, 108), ofColor(5, 14, 36));
 //    ofBackground(0);
     ofNoFill();
     
@@ -329,12 +334,12 @@ void ofApp::draw() {
     pathMake.particleMoving(sizeSphere);
     pathMake.creatorDraw();
     
-    boxDraw(EB, ofColor(255, 70, 0, 170));
-    boxDraw(EE, ofColor(255, 100, 0, 170));
-    boxDraw(ES, ofColor(255, 130, 0, 170));
-    boxDraw(HB, ofColor(255, 180, 0, 170));
-    boxDraw(HE, ofColor(255, 220, 0, 170));
-    boxDraw(HF, ofColor(255, 255, 0, 170));
+    boxDraw(EB, ofColor(255, 70 * 2, 0, 255));
+    boxDraw(EE, ofColor(255, 100 * 2, 0, 255));
+    boxDraw(ES, ofColor(255, 130 * 2, 0, 255));
+    boxDraw(HB, ofColor(255, 180 * 2, 0, 255));
+    boxDraw(HE, ofColor(255, 220 * 2, 0, 255));
+    boxDraw(HF, ofColor(255, 255 * 2, 0, 255));
     
     cam.end();
     
@@ -343,7 +348,7 @@ void ofApp::draw() {
     ofPushStyle();
     ofSetColor(255, 130);
     ofDrawLine(ofGetWidth() * 0.5, score2DlineTop * 1.2, ofGetWidth() * 0.5, ofGetHeight() - 10);
-    //    ofDrawLine(ofGetWidth()*0.4, ofGetHeight()-10, ofGetWidth()*0.6, ofGetHeight()-10);
+//        ofDrawLine(ofGetWidth()*0.4, ofGetHeight()-10, ofGetWidth()*0.6, ofGetHeight()-10);
     
     ofSetColor(140, 120, 210, 140);
     glLineWidth(0.1);
@@ -357,7 +362,7 @@ void ofApp::draw() {
     
     ofPopMatrix();
     
-    //    interfaceDrawing();
+    interfaceDrawing();
     
 }
 
@@ -775,10 +780,12 @@ void ofApp::linePathHiddenCapture() {
     ofPixels _p = pathMake.spectrum2DMake(0.4);
     _p.mirror(false, false);
     ofImage _captureImage;
-    _captureImage.allocate(captureW, captureH, OF_IMAGE_COLOR);
-    
+
     if (_p.size() > 0) {
-        _captureImage.setFromPixels(_p.getData(), captureW, captureH, OF_IMAGE_COLOR);
+        int pw = _p.getWidth();
+        int ph = _p.getHeight();
+        _captureImage.allocate(pw, ph, OF_IMAGE_COLOR);
+        _captureImage.setFromPixels(_p.getData(), pw, ph, OF_IMAGE_COLOR);
         _captureImage.mirror(true, false);
         spectrum->loadImageSpectrum(_captureImage);
     }

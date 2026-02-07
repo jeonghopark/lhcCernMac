@@ -9,6 +9,13 @@ bool maxX( float a, float b){
 }
 
 //--------------------------------------------------------------
+void PathData::safeSetColor(ofPixels& px, int x, int y, const ofColor& c){
+    if(x >= 0 && x < (int)px.getWidth() && y >= 0 && y < (int)px.getHeight()){
+        px.setColor(x, y, c);
+    }
+}
+
+//--------------------------------------------------------------
 PathData::PathData(){
     
     creatorResolution = 18;
@@ -190,7 +197,7 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
                 if ((int)(_l - widthScreen * 0.5)==(k-(int)_startL)){
                     _c = 255;
                 }
-                score2D.setColor(k-(int)_startL, (int)_y2-512-_baseFQ, ofColor(255,_c));
+                safeSetColor(score2D, k-(int)_startL, (int)_y2-512-_baseFQ, ofColor(255,_c));
 //                for (int l=0; l<20; l++) {
 //                    score2D.setColor(k-(int)_startL, _y2-512-_baseFQ-l+10, ofColor(255,255));
 //                }
@@ -202,7 +209,7 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
                 if ((int)(_r + widthScreen * 0.5)==(k+(int)_startR)){
                     _c = 255;
                 }
-                score2D.setColor(k+(int)_startR, (int)_y2-512-_baseFQ, ofColor(255,_c));
+                safeSetColor(score2D, k+(int)_startR, (int)_y2-512-_baseFQ, ofColor(255,_c));
 //                for (int k=0; k<5; k++) {
 //                    score2D.setColor(_startR, _y2-512-_baseFQ-k+2, ofColor(255,255));
 //                }
@@ -242,18 +249,18 @@ ofPixels PathData::spectrum2DMake(float _f){
             float _startL = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
             for (int i=0; i>-_x2; i--) {
                 float _c = ofMap(i, -_x2, 0, 0, 255);
-                pathPixels.setColor(i-(int)_startL, (int)_y2-512-_baseFQ, ofColor(_c));
+                safeSetColor(pathPixels, i-(int)_startL, (int)_y2-512-_baseFQ, ofColor(_c));
                 for (int k=0; k<5; k++) {
-                    pathPixels.setColor(-_startL, _y2-512-_baseFQ-k+2, ofColor(255));
+                    safeSetColor(pathPixels, -_startL, _y2-512-_baseFQ-k+2, ofColor(255));
                 }
             }
         } else {
             float _startR = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
             for (int i=0; i<_x2; i++) {
                 float _c = ofMap(i, 0, _x2, 255, 0);
-                pathPixels.setColor(i+(int)_startR, (int)_y2-512-_baseFQ, ofColor(_c));
+                safeSetColor(pathPixels, i+(int)_startR, (int)_y2-512-_baseFQ, ofColor(_c));
                 for (int k=0; k<5; k++) {
-                    pathPixels.setColor(_startR, _y2-512-_baseFQ-k+2, ofColor(255));
+                    safeSetColor(pathPixels, _startR, _y2-512-_baseFQ-k+2, ofColor(255));
                 }
             }
         }

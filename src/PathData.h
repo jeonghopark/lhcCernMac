@@ -96,6 +96,8 @@ public:
     ofPixels capturePixels;
     ofPixels spectrum2DMake(float _f);
 
+    void safeSetColor(ofPixels& px, int x, int y, const ofColor& c);
+
     ofPixels pathPixels;
     ofPixels score2D;
     ofImage score2dImg;
