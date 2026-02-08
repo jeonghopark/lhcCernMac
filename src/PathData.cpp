@@ -576,36 +576,60 @@ void PathData::particleMoving(float _f){
     // Batch Rendering Optimization
     movingPointMesh.clear();
     
-    for(size_t i=0; i<pathPolyLines.size(); i++) {
+    // O(1) Interpolation Optimization: access raw data directly
+    // Assuming pathResult and lengthPath are synchronized with pathPolyLines
+    int numPaths = pathResult.size();
+    
+    for(size_t i=0; i<numPaths; i++) {
 
-        // Use const reference to avoid copying vertices
-        const vector<glm::vec3>& _tempPath = pathPolyLines[i].getVertices();
+        // Use const reference to raw path data
+        const vector<ofVec3f>& _rawPath = pathResult[i];
         
-        // Safety check for empty paths
-        if (_tempPath.empty()) continue;
+        // Safety check
+        if (_rawPath.empty()) continue;
 
-        float _pathStartLen = glm::length(_tempPath[0]);
-        int _lastIndex = _tempPath.size() - 1;
-        float _pathEndLen = glm::length(_tempPath[_lastIndex]);
+        float _pathStartLen = _rawPath[0].length(); // Distance from origin to start
+        float _totalLen = lengthPath[i];
         
         ofVec3f _pos;
         ofColor _c;
         
-        if ( _f > _pathEndLen ) {
+        float _distAlongPath = _f - _pathStartLen;
+        
+        if ( _distAlongPath >= _totalLen ) {
             // Reached the end
             _c = ofColor(132, 148, 180, _alpha * 1.0);
-            _pos = _tempPath[_lastIndex];
+            _pos = _rawPath.back();
             
-        } else if ( _f < _pathStartLen ) {
+        } else if ( _distAlongPath <= 0 ) {
             // Before the start
             _c = ofColor(240, 184, 161, _alpha * 1.0);
-            _pos = _tempPath[0];
+            _pos = _rawPath[0];
             
         } else {
             // Moving along the path
             _c = ofColor(255, 255, 255, _alpha); // Pure White
-            float _length = _f - _pathStartLen;
-            _pos = pathPolyLines[i].getPointAtLength(_length);
+            
+            // O(1) Interpolation
+            // Since points are generated with uniform angle steps, they are approximately equidistant/uniform for interpolation.
+            // Map distance to index range [0, lineStep-1]
+            if (_totalLen > 0.0001f && _rawPath.size() > 1) {
+                float t = _distAlongPath / _totalLen;
+                float exactIndex = t * (_rawPath.size() - 1);
+                int idx = (int)exactIndex;
+                float rem = exactIndex - idx;
+                
+                // Safety clamp
+                if (idx >= _rawPath.size() - 1) {
+                    idx = _rawPath.size() - 2;
+                    rem = 1.0f;
+                }
+                
+                // Linear Interpolation
+                _pos = _rawPath[idx] * (1.0f - rem) + _rawPath[idx+1] * rem;
+            } else {
+                 _pos = _rawPath[0];
+            }
         }
         
         movingPointMesh.addVertex(_pos);
@@ -616,7 +640,7 @@ void PathData::particleMoving(float _f){
     // Draw all points in one batch
     glPushAttrib(GL_POINT_BIT);
     glEnable(GL_POINT_SMOOTH);
-    glPointSize(3.0);
+    glPointSize(10.0);
     movingPointMesh.draw();
     glPopAttrib();
     

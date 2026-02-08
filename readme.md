@@ -68,3 +68,4 @@ A project by JeongHo Park
 - **Performance:** Optimized particle rendering loop and reduced geometry resolution to maintain smooth frame rates with high particle counts.
 - **Visuals:** Replaced 3D spheres with billboarded 2D circles (always facing camera) for clearer visibility and performance.
 - **Optimization:** Implemented batch rendering using GL_POINTS to replace per-particle draw calls, drastically reducing CPU/GPU overhead for massive particle counts.
+- **Algorithm:** Replaced linear path search with O(1) index interpolation for particle movement, eliminating the last CPU bottleneck.

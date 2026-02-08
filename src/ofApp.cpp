@@ -78,11 +78,11 @@ void ofApp::setup() {
         ifftPhaseRight[i] = 0;
     }
 
-    maxHertz = 4000;
+    maxHertz = 3000;
     spectrum = new SpectrumDrawer(1, maxHertz);
     
-    maxHz = 4000;
-    minHz = 180;
+    maxHz = maxHertz;
+    minHz = 40;
     
     //    ofSoundStreamSetup( 2, 0, this, SAMPLE_RATE, INITIAL_BUFFER_SIZE, 4 );
     //    ofSoundStreamStop();
@@ -120,7 +120,7 @@ void ofApp::setup() {
     lineSize = 22;
     rotateZFactor = 0;
     
-    lhcIgFileLoad.openFile("4lepton.ig", "LHC/"); //4lepton.ig , dimuon-Jpsi_0.ig
+    lhcIgFileLoad.openFile("diphoton.ig", "LHC/"); //4lepton.ig , dimuon-Jpsi_0.ig , diphoton.ig
     bufferEventCopy = lhcIgFileLoad.bufferEvent;
     
     
@@ -375,14 +375,14 @@ void ofApp::draw() {
     
     ofPopMatrix();
     
-    interfaceDrawing();
+//    interfaceDrawing();
 
     // Display audio engine mode
-    ofPushStyle();
-    ofSetColor(useIFFT ? ofColor(255, 180, 50) : ofColor(50, 200, 255));
-    information.drawString(useIFFT ? "IFFT" : "Additive", 10, ofGetHeight() - 15);
-    information.drawString("[M] to switch", 10, ofGetHeight() - 3);
-    ofPopStyle();
+//    ofPushStyle();
+//    ofSetColor(useIFFT ? ofColor(255, 180, 50) : ofColor(50, 200, 255));
+//    information.drawString(useIFFT ? "IFFT" : "Additive", 10, ofGetHeight() - 15);
+//    information.drawString("[M] to switch", 10, ofGetHeight() - 3);
+//    ofPopStyle();
 
 }
 
