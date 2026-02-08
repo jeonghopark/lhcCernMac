@@ -124,7 +124,7 @@ void ofApp::setup() {
     lineSize = 12;
     rotateZFactor = 0;
     
-    lhcIgFileLoad.openFile("dimuon-Jpsi_0.ig", "LHC/");
+    lhcIgFileLoad.openFile("4lepton.ig", "LHC/");
     bufferEventCopy = lhcIgFileLoad.bufferEvent;
     
     

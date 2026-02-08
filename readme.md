@@ -32,8 +32,14 @@ Current audio engine mode is displayed at the bottom-left corner of the screen.
 
 ## Data
 
-Event data is in CERN's iSpy `.ig` format (ZIP-compressed).
-More .ig files are available at [CERN Open Data Portal](http://opendata.cern.ch/record/301).
+Event data is in CERN's iSpy `.ig` format (ZIP-compressed). Included datasets:
+
+- **4lepton.ig** — Higgs boson candidate events: H → ZZ* → 4 leptons (4μ, 4e, 2e2μ), 3 events at 120-130 GeV
+- **diphoton.ig** — Higgs boson candidate events: H → γγ, 10 events at 120-130 GeV
+- **dimuon-Jpsi_0.ig** — J/ψ dimuon resonance events (~3.1 GeV)
+
+Higgs candidate data from [CERN Open Data Record 300](http://opendata.cern.ch/record/300).
+More .ig files at [CERN Open Data Record 301](http://opendata.cern.ch/record/301).
 
 ## Credits
 
