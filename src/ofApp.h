@@ -192,6 +192,8 @@ public:
 
     // Audio engine mode: Additive vs IFFT
     bool useIFFT;
+    bool debugLeftTone;
+    float debugLeftPhase;
     static const int FFT_SIZE = 4096;
     static const int FFT_HALF = 2048;
     float ifftBufferLeft[4096];

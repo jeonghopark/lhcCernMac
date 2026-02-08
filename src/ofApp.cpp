@@ -63,6 +63,8 @@ void ofApp::setup() {
     
     // IFFT engine init
     useIFFT = false;
+    debugLeftTone = false;
+    debugLeftPhase = 0.0f;
     ifftReadPos = FFT_SIZE; // force initial computation
     for (int i = 0; i < FFT_SIZE; i++) {
         windowFunc[i] = 0.5f * (1.0f - cos(2.0f * PI * i / (FFT_SIZE - 1)));
@@ -91,13 +93,7 @@ void ofApp::setup() {
     //    if (!devices.empty()) {
     //        settings.setOutDevice(devices[1]);
     //    }
-    auto devices = soundStream.getDeviceList();
-    for (auto& dev : devices) {
-        if (dev.name.find("MacBook Pro") != string::npos && dev.outputChannels >= 2) {
-            settings.setOutDevice(dev);
-            break;
-        }
-    }
+    // Use the system-selected default output device.
     settings.setOutListener(this);
     settings.bufferSize = INITIAL_BUFFER_SIZE;
     settings.sampleRate = SAMPLE_RATE;
@@ -121,10 +117,10 @@ void ofApp::setup() {
     speed = 0.4;
     
     
-    lineSize = 12;
+    lineSize = 22;
     rotateZFactor = 0;
     
-    lhcIgFileLoad.openFile("4lepton.ig", "LHC/");
+    lhcIgFileLoad.openFile("4lepton.ig", "LHC/"); //4lepton.ig , dimuon-Jpsi_0.ig
     bufferEventCopy = lhcIgFileLoad.bufferEvent;
     
     
@@ -212,9 +208,9 @@ void ofApp::update() {
         }
         
         if (trigger) {
-            playLineRightXPos += speed;
-            playLineLeftXPos -= speed;
-            sizeSphere = (playLineRightXPos - scoreWidth * 0.5) * 2.5;
+            playLineRightXPos += speed * 2.5;
+            playLineLeftXPos -= speed * 2.5;
+            sizeSphere = (playLineRightXPos - scoreWidth * 0.5) * 1.0;
         }
         
         if (playLineRightXPos > scoreWidth - 10) {
@@ -229,10 +225,11 @@ void ofApp::update() {
     
     
     if (allPlay) {
+        float leftSampleX = playLineLeftXPos;
         for (int n = 0; n < BIT; n++) {
             ampRight[n] = (ampRight[n] * playLineRight + spectrum->getAmp(playLineRightXPos, n)) / (playLineRight + 1);
             hertzScaleRight[n] = int(spectrum->getFreq(n));
-            ampLeft[n] = (ampLeft[n] * playLineLeft + spectrum->getAmp(playLineLeftXPos, n)) / (playLineLeft + 1);
+            ampLeft[n] = (ampLeft[n] * playLineLeft + spectrum->getAmp(leftSampleX, n)) / (playLineLeft + 1);
             hertzScaleLeft[n] = int(spectrum->getFreq(n));
         }
     }
@@ -279,7 +276,7 @@ void ofApp::update() {
     
     rotateZValue = rotateZValue + rotateZFactor;
     
-    pathMake.score2DTriggerDraw(playLineLeftXPos - scoreWidth * 0.5, playLineRightXPos - scoreWidth * 0.5, 0.4);
+    pathMake.score2DTriggerDraw(playLineLeftXPos - scoreWidth * 0.5, playLineRightXPos - scoreWidth * 0.5, 1.0);
     
     
 }
@@ -289,7 +286,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     
-    ofBackgroundGradient(ofColor(13, 90, 108), ofColor(5, 14, 36));
+    ofBackgroundGradient(ofColor(3, 60, 88), ofColor(2, 9, 20));
 //    ofBackground(0);
     ofNoFill();
     
@@ -349,13 +346,13 @@ void ofApp::draw() {
     pathMake.particleMoving(sizeSphere);
     pathMake.creatorDraw();
     
-    boxDraw(EB, ofColor(255, 70 * 2, 0, 255));
-    boxDraw(EE, ofColor(255, 100 * 2, 0, 255));
-    boxDraw(ES, ofColor(255, 130 * 2, 0, 255));
-    boxDraw(HB, ofColor(255, 180 * 2, 0, 255));
-    boxDraw(HE, ofColor(255, 220 * 2, 0, 255));
-    boxDraw(HF, ofColor(255, 255 * 2, 0, 255));
-    
+    boxDraw(EB, ofColor(255, 255, 255, 120));
+    boxDraw(EE, ofColor(255, 255, 255, 120));
+    boxDraw(ES, ofColor(255, 255, 255, 120));
+    boxDraw(HB, ofColor(255, 255, 255, 120));
+    boxDraw(HE, ofColor(255, 255, 255, 120));
+    boxDraw(HF, ofColor(255, 255, 255, 120));
+
     cam.end();
     
     
@@ -520,12 +517,17 @@ void ofApp::loadEvent(ofBuffer _b) {
                 
                 ofVec3f pos1T = ofVec3f(ofToFloat(points[0]), ofToFloat(points[1]), ofToFloat(points[2])) * pointScale;
                 vMeshPos1.push_back(pos1T);
-                ofVec3f dir1T = ofVec3f(ofToFloat(points[3]), ofToFloat(points[4]), ofToFloat(points[5])) * pointScaleDir;
-                vMeshDir1.push_back(dir1T);
+                
+                ofVec3f momentum1 = ofVec3f(ofToFloat(points[3]), ofToFloat(points[4]), ofToFloat(points[5]));
+                // Pass raw momentum vector for Helical Propagator in PathData
+                vMeshDir1.push_back(momentum1);
+                
                 ofVec3f pos2T = ofVec3f(ofToFloat(points[6]), ofToFloat(points[7]), ofToFloat(points[8])) * pointScale;
                 vMeshPos2.push_back(pos2T);
-                ofVec3f dir2T = ofVec3f(ofToFloat(points[9]), ofToFloat(points[10]), ofToFloat(points[11])) * pointScaleDir;
-                vMeshDir2.push_back(dir2T);
+                
+                ofVec3f momentum2 = ofVec3f(ofToFloat(points[9]), ofToFloat(points[10]), ofToFloat(points[11]));
+                // Pass raw momentum vector for Helical Propagator in PathData
+                vMeshDir2.push_back(momentum2);
                 
                 line = buffer.getNextLine();
             }
@@ -809,7 +811,7 @@ void ofApp::linePathHiddenCapture() {
         int ph = _p.getHeight();
         _captureImage.allocate(pw, ph, OF_IMAGE_COLOR);
         _captureImage.setFromPixels(_p.getData(), pw, ph, OF_IMAGE_COLOR);
-        _captureImage.mirror(true, false);
+        // Keep original orientation so left/right read positions differ.
         spectrum->loadImageSpectrum(_captureImage);
     }
     
@@ -933,6 +935,10 @@ void ofApp::keyPressed(int key) {
         case 'm':
             useIFFT = !useIFFT;
             cout << "Audio Engine: " << (useIFFT ? "IFFT" : "Additive") << endl;
+            break;
+        case 'l':
+            debugLeftTone = !debugLeftTone;
+            cout << "Left Debug Tone: " << (debugLeftTone ? "ON" : "OFF") << endl;
             break;
 
         default:
@@ -1388,12 +1394,14 @@ void ofApp::computeIFFT(float* ampSpectrum, int* hertzScale, float* phaseAccum, 
 
 //--------------------------------------------------------------
 void ofApp::audioOut(ofSoundBuffer & buffer) {
+    const float debugToneFreq = 440.0f;
+    const float debugToneAmp = 0.1f;
     
     if (allPlay) {
 
         if (!useIFFT) {
             // === ADDITIVE SYNTHESIS ===
-            for (int i = 0; i < buffer.getNumFrames(); i += 2) {
+            for (int i = 0; i < buffer.getNumFrames(); i++) {
 
                 waveRight = 0.0;
                 waveLeft = 0.0;
@@ -1417,6 +1425,12 @@ void ofApp::audioOut(ofSoundBuffer & buffer) {
 
                 waveRight /= 20.0;
                 waveLeft /= 20.0;
+
+                if (debugLeftTone) {
+                    waveLeft += sinf(debugLeftPhase) * debugToneAmp;
+                    debugLeftPhase += TWO_PI * debugToneFreq / SAMPLE_RATE;
+                    if (debugLeftPhase > TWO_PI) debugLeftPhase -= TWO_PI;
+                }
 
                 if (waveRight > 1.0) waveRight = 1.0;
                 if (waveRight < -1.0) waveRight = -1.0;
@@ -1461,6 +1475,12 @@ void ofApp::audioOut(ofSoundBuffer & buffer) {
                 float sR = ifftBufferRight[ifftReadPos];
                 ifftReadPos++;
 
+                if (debugLeftTone) {
+                    sL += sinf(debugLeftPhase) * debugToneAmp;
+                    debugLeftPhase += TWO_PI * debugToneFreq / SAMPLE_RATE;
+                    if (debugLeftPhase > TWO_PI) debugLeftPhase -= TWO_PI;
+                }
+
                 if (sL > 1.0f) sL = 1.0f;
                 if (sL < -1.0f) sL = -1.0f;
                 if (sR > 1.0f) sR = 1.0f;
@@ -1472,8 +1492,14 @@ void ofApp::audioOut(ofSoundBuffer & buffer) {
         }
     } else {
         for (int i = 0; i < buffer.getNumFrames(); i++) {
-            buffer[i * buffer.getNumChannels()    ] = 0;
-            buffer[i * buffer.getNumChannels() + 1] = 0;
+            float leftOut = 0.0f;
+            if (debugLeftTone) {
+                leftOut = sinf(debugLeftPhase) * debugToneAmp;
+                debugLeftPhase += TWO_PI * debugToneFreq / SAMPLE_RATE;
+                if (debugLeftPhase > TWO_PI) debugLeftPhase -= TWO_PI;
+            }
+            buffer[i * buffer.getNumChannels()    ] = leftOut;
+            buffer[i * buffer.getNumChannels() + 1] = 0.0f;
         }
     }
     
@@ -1615,4 +1641,3 @@ void ofApp::interfaceDrawing() {
     ofPopStyle();
     
 }
-

@@ -50,3 +50,21 @@ Based on code from:
 ## Author
 
 A project by JeongHo Park
+
+## Changelog
+
+### 2026-02-08
+- Fixed left audio channel silence issue caused by incorrect coordinate calculation in `PathData::spectrum2DMake`.
+- Added debug tone functionality to `audioOut` for testing audio output.
+
+### 2026-02-08 (Physics Update)
+- **Physics-Accurate Visualization:** Replaced momentum-based approximation with **Geometric Circle Interpolation**.
+  - High-momentum particles now correctly appear as straight lines.
+  - Low-momentum particles appear as smooth helical arcs.
+- **Artifact Removal:** Eliminated non-physical "S-curve" anomalies by enforcing strict start-tangent-end constraints.
+- **Spectrum Display:** Widened the horizontal spectrum display by 10x for enhanced resolution and visibility.
+- **Playback Speed:** Adjusted global playback speed and 3D particle motion scaling to match the widened spectrum duration.
+- **Stability:** Fixed a crash caused by NaN values in angle calculations (`PathData::degreeCal`).
+- **Performance:** Optimized particle rendering loop and reduced geometry resolution to maintain smooth frame rates with high particle counts.
+- **Visuals:** Replaced 3D spheres with billboarded 2D circles (always facing camera) for clearer visibility and performance.
+- **Optimization:** Implemented batch rendering using GL_POINTS to replace per-particle draw calls, drastically reducing CPU/GPU overhead for massive particle counts.

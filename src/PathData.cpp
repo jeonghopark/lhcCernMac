@@ -73,7 +73,7 @@ void PathData::setup( vector<ofVec3f> _a, vector<ofVec3f> _b, vector<ofVec3f> _c
     
     pathPolyLineSetup();
     
-    sphereElement.setResolution(6);
+    sphereElement.setResolution(3);
     sphereElement.setRadius(1.5);
     
     movingPointMesh.setMode(OF_PRIMITIVE_POINTS);
@@ -181,7 +181,7 @@ void PathData::score2DTriggerDraw(float _l, float _r, float _f){
     
     for (int i=0; i<_degreeSort.size(); i++) {
         
-        float _x2 = lengthPath[i] * 0.4;
+        float _x2 = lengthPath[i] * _lengthRatio;
         
         float _y2 = heightScreen - 80 - _degreeSort[i] * _degreeRatio;
         float _di = lineDirection[i];
@@ -246,12 +246,12 @@ ofPixels PathData::spectrum2DMake(float _f){
         float _baseFQ = 80;
         
         if (_di<0) {
-            float _startL = pathPolyLines[i][0].length() * _lengthRatio + widthScreen * 0.5;
-            for (int i=0; i>-_x2; i--) {
-                float _c = ofMap(i, -_x2, 0, 0, 255);
-                safeSetColor(pathPixels, i-(int)_startL, (int)_y2-512-_baseFQ, ofColor(_c));
-                for (int k=0; k<5; k++) {
-                    safeSetColor(pathPixels, -_startL, _y2-512-_baseFQ-k+2, ofColor(255));
+            float _startL = widthScreen * 0.5 - pathPolyLines[i][0].length() * _lengthRatio;
+            for (int k=0; k>-(int)_x2; k--) {
+                float _c = ofMap(k, -_x2, 0, 0, 255);
+                safeSetColor(pathPixels, k+(int)_startL, (int)_y2-512-_baseFQ, ofColor(_c));
+                for (int m=0; m<5; m++) {
+                    safeSetColor(pathPixels, (int)_startL, _y2-512-_baseFQ-m+2, ofColor(255));
                 }
             }
         } else {
@@ -279,43 +279,113 @@ vector<ofVec3f> PathData::curveFomulaCal(ofVec3f _a, ofVec3f _b, ofVec3f _c, ofV
     
     vector<ofVec3f> _vtest;
     
-    float _eps = 0.09;
-    ofVec3f controlPoint1 = _b;
-    ofVec3f controlPoint2 = _d;
-    
-    float paramA = _d.normalize().dot(_b.normalize());
-    float paramC = (_c-_a).normalize().dot((_c-_a).normalize());
-    float paramD = _d.normalize().dot(_b.cross((_c-_a).normalize()));
-    
-    ofVec3f perp = _b.cross(_d);
-    
-    if ( std::abs(paramC) < _eps || (std::abs(paramA-1) < _eps && std::abs(paramD/paramC) < _eps) || (std::abs(perp.dot(perp)) < _eps)) {        
-        _vtest.clear();
-        _vtest.push_back( _a );
-        _vtest.push_back( _c );
-        
-    } else {
         _vtest.clear();
         
-        for(int i=0; i<lineStep; i++) {
-            
-            float t = (float)i/(lineStep-1);
-            
-            // calculate blending functions
-            float b0 =  2*t*t*t - 3*t*t + 1;
-            float b1 = -2*t*t*t + 3*t*t;
-            float b2 = t*t*t - 2*t*t + t;
-            float b3 = t*t*t - t*t;
-            
-            // calculate the x,y and z of the curve point
-            float x = b0*_a.x + b1*_c.x + b2*controlPoint1.x + b3*controlPoint2.x ;
-            float y = b0*_a.y + b1*_c.y + b2*controlPoint1.y + b3*controlPoint2.y ;
-            float z = b0*_a.z + b1*_c.z + b2*controlPoint1.z + b3*controlPoint2.z ;
-            
-            _vtest.push_back( ofVec3f(x,y,z) );
-            
+        // _b contains the raw momentum vector (Tangent at Start)
+        ofVec2f startXY(_a.x, _a.y);
+        ofVec2f targetXY(_c.x, _c.y);
+        ofVec2f momXY(_b.x, _b.y);
+        
+        // Safety: If momentum is zero, or start==target, return straight line
+        float distConfig = startXY.distance(targetXY);
+        if (momXY.length() < 0.0001 || distConfig < 0.0001) {
+            _vtest.push_back(_a);
+            _vtest.push_back(_c);
+            return _vtest;
         }
-    }
+        
+        momXY.normalize();
+        
+        // Geometric Circle Interpolation
+        // Center is intersection of:
+        // 1. Line passing through Start, perpendicular to Momentum.
+        // 2. Line passing through Midpoint(Start-Target), perpendicular to Chord(Start-Target).
+        
+        ofVec2f chord = targetXY - startXY;
+        ofVec2f midpoint = startXY + chord * 0.5;
+        
+        // Line 1: P = Start + t * perpMomentum
+        ofVec2f perpMom(-momXY.y, momXY.x); // (-y, x)
+        
+        // Line 2: P = Midpoint + s * perpChord
+        ofVec2f perpChord(-chord.y, chord.x);
+        
+        // Intersection?
+        // Start + t * perpMom = Midpoint + s * perpChord
+        // t * perpMom - s * perpChord = Midpoint - Start
+        // Solve for t and s.
+        // Vector equation: t*U + s*V = W
+        // x: t*Ux + s*Vx = Wx
+        // y: t*Uy + s*Vy = Wy
+        // det = Ux*Vy - Uy*Vx
+        
+        float Ux = perpMom.x;
+        float Uy = perpMom.y;
+        float Vx = -perpChord.x; // Moving s term to LHS
+        float Vy = -perpChord.y;
+        float Wx = midpoint.x - startXY.x;
+        float Wy = midpoint.y - startXY.y;
+        
+        float det = Ux*Vy - Uy*Vx;
+        
+        if (abs(det) < 0.0001) {
+            // Lines are parallel -> Straight line path (Infinite Radius)
+             for(int i=0; i<lineStep; i++) {
+                float t = (float)i/(lineStep-1);
+                ofVec3f pos = _a.getInterpolated(_c, t);
+                _vtest.push_back(pos);
+            }
+            return _vtest;
+        }
+        
+        float t_val = (Wx*Vy - Wy*Vx) / det;
+        
+        ofVec2f center = startXY + perpMom * t_val;
+        float radius = center.distance(startXY);
+        
+        // Calculate Angles
+        float startAngle = atan2(startXY.y - center.y, startXY.x - center.x);
+        float endAngle = atan2(targetXY.y - center.y, targetXY.x - center.x);
+        
+        // Determine Sweep Direction (CW or CCW)
+        // The arc must start in the direction of 'momXY'.
+        // Vector from Center to Start: R_vec = Start - Center.
+        // Tangent at Start = Cross(Axis, R_vec) ? 
+        // For CCW: Tangent is (-Ry, Rx) normalized.
+        // For CW: Tangent is (Ry, -Rx) normalized.
+        // Let's check dot product of "Standard CCW Tangent" with actual Momentum.
+        
+        ofVec2f rVec = startXY - center;
+        ofVec2f ccwTangent(-rVec.y, rVec.x); // rotated 90 deg CCW
+        
+        // If Dot(ccwTangent, momXY) > 0, we go CCW. Else CW.
+        bool goCCW = (ccwTangent.dot(momXY) > 0);
+        
+        float sweep = endAngle - startAngle;
+        
+        // Normalize sweep to [-PI, PI]? No, we want specific direction.
+        // If CCW, we want sweep > 0 (or adjust).
+        // Standardize angles to [0, TWO_PI) for math simplicity, then logic.
+        
+        if (goCCW) {
+            // Must increase angle.
+            if (endAngle < startAngle) endAngle += TWO_PI;
+        } else {
+            // Must decrease angle.
+            if (endAngle > startAngle) endAngle -= TWO_PI;
+        }
+        
+        // Generate Points
+        for(int i=0; i<lineStep; i++) {
+            float t = (float)i/(lineStep-1);
+            float currentAngle = ofLerp(startAngle, endAngle, t);
+            
+            float x = center.x + radius * cos(currentAngle);
+            float y = center.y + radius * sin(currentAngle);
+            float z = ofLerp(_a.z, _c.z, t); // Linear Z interpolation
+            
+            _vtest.push_back(ofVec3f(x, y, z));
+        }
     
     return _vtest;
     
@@ -363,7 +433,7 @@ float PathData::degreeCal( vector<ofVec3f> _v ){
     
     float _fDegree = 0;
     
-    if (_v.size()==2) {
+    if (_v.size()<=1) {
         _fDegree = 0;
     } else {
         for(int i=0; i<_v.size()-1; i++) {
@@ -372,9 +442,16 @@ float PathData::degreeCal( vector<ofVec3f> _v ){
             float fB = sqrt( _v[i].x * _v[i].x + _v[i].y * _v[i].y + _v[i].z * _v[i].z );
             float fDot = _v[i+1].x * _v[i].x + _v[i+1].y * _v[i].y + _v[i+1].z * _v[i].z;
             
-            float _f = acos(fDot/(fA*fB)) * 180 / PI;
-            _fDegree = abs(_fDegree + _f);
-            
+            float denom = fA*fB;
+            if (denom > 0.000001f) {
+                float cosVal = fDot/denom;
+                if (cosVal > 1.0f) cosVal = 1.0f;
+                if (cosVal < -1.0f) cosVal = -1.0f;
+                
+                float _f = acos(cosVal) * 180 / PI;
+                if (isnan(_f)) _f = 0; // Safety
+                _fDegree = abs(_fDegree + _f);
+            }
         }
         
     }
@@ -389,20 +466,40 @@ float PathData::twoPointsDegreeCal( vector<ofVec3f> _v ){
     
     float _fDegree = 0;
     
-    if (_v.size()==2) {
+    if (_v.size()<=1) {
         return _fDegree = 0;
     } else {
         
         float fA1 = sqrt( _v[1].x * _v[1].x + _v[1].y * _v[1].y + _v[1].z * _v[1].z );
         float fB1 = sqrt( _v[0].x * _v[0].x + _v[0].y * _v[0].y + _v[0].z * _v[0].z );
         float fDot1 = _v[1].x * _v[0].x + _v[1].y * _v[0].y + _v[1].z * _v[0].z;
-        float _f1 = acos(fDot1/(fA1*fB1)) * 180 / PI;
         
+        float denom1 = fA1*fB1;
+        float _f1 = 0;
+        
+        if (denom1 > 0.000001f) {
+            float cosVal = fDot1/denom1;
+             if (cosVal > 1.0f) cosVal = 1.0f;
+             if (cosVal < -1.0f) cosVal = -1.0f;
+             _f1 = acos(cosVal) * 180 / PI;
+             if (isnan(_f1)) _f1 = 0;
+        }
+
         int _num = _v.size()-1;
         float fA2 = sqrt( _v[_num].x * _v[_num].x + _v[_num].y * _v[_num].y + _v[_num].z * _v[_num].z );
         float fB2 = sqrt( _v[_num-1].x * _v[_num-1].x + _v[_num-1].y * _v[_num-1].y + _v[_num-1].z * _v[_num-1].z );
         float fDot2 = _v[_num].x * _v[_num-1].x + _v[_num].y * _v[_num-1].y + _v[_num].z * _v[_num-1].z;
-        float _f2 = acos(fDot2/(fA2*fB2)) * 180 / PI;
+        
+        float denom2 = fA2*fB2;
+        float _f2 = 0;
+        
+        if (denom2 > 0.000001f) {
+            float cosVal = fDot2/denom2;
+             if (cosVal > 1.0f) cosVal = 1.0f;
+             if (cosVal < -1.0f) cosVal = -1.0f;
+             _f2 = acos(cosVal) * 180 / PI;
+             if (isnan(_f2)) _f2 = 0;
+        }
         
         return _fDegree = abs(_f1) + abs(_f2);
         
@@ -476,31 +573,52 @@ void PathData::particleMoving(float _f){
     float _alpha = 100;
     
     
-    for(int i=0; i<pathPolyLines.size(); i++) {
+    // Batch Rendering Optimization
+    movingPointMesh.clear();
+    
+    for(size_t i=0; i<pathPolyLines.size(); i++) {
 
-        float _length = _f - glm::length(pathPolyLines[i][0]);
+        // Use const reference to avoid copying vertices
+        const vector<glm::vec3>& _tempPath = pathPolyLines[i].getVertices();
         
-        ofVec3f _pos = pathPolyLines[i].getPointAtLength(_length);
+        // Safety check for empty paths
+        if (_tempPath.empty()) continue;
 
-        vector<glm::vec3> _tempPath = pathPolyLines[i].getVertices();
+        float _pathStartLen = glm::length(_tempPath[0]);
+        int _lastIndex = _tempPath.size() - 1;
+        float _pathEndLen = glm::length(_tempPath[_lastIndex]);
         
-        int _indexChange;
-        if (_tempPath.size()==2) _indexChange = 1;
-        else _indexChange = lineStep - 1;
+        ofVec3f _pos;
+        ofColor _c;
         
-        if ( _f > glm::length(_tempPath[_indexChange]) ) {
-            ofSetColor( 132, 148, 180, _alpha * 1.0 );
-            _pos = _tempPath[_indexChange];
-        } else if ( _f < glm::length(pathPolyLines[i][0]) ) {
-            ofSetColor( 240, 184, 161, _alpha * 1.0 );
+        if ( _f > _pathEndLen ) {
+            // Reached the end
+            _c = ofColor(132, 148, 180, _alpha * 1.0);
+            _pos = _tempPath[_lastIndex];
+            
+        } else if ( _f < _pathStartLen ) {
+            // Before the start
+            _c = ofColor(240, 184, 161, _alpha * 1.0);
+            _pos = _tempPath[0];
+            
         } else {
-            ofSetColor( 240, 248, 255, _alpha );
+            // Moving along the path
+            _c = ofColor(255, 255, 255, _alpha); // Pure White
+            float _length = _f - _pathStartLen;
+            _pos = pathPolyLines[i].getPointAtLength(_length);
         }
         
-        sphereElement.setPosition(_pos);
-        sphereElement.draw();
+        movingPointMesh.addVertex(_pos);
+        movingPointMesh.addColor(_c);
         
     }
+    
+    // Draw all points in one batch
+    glPushAttrib(GL_POINT_BIT);
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(3.0);
+    movingPointMesh.draw();
+    glPopAttrib();
     
     ofPopStyle();
     
